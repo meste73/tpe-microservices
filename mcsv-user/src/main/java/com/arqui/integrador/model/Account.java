@@ -37,7 +37,7 @@ public class Account {
 	private double amount;
 	
 	@Column(nullable = false)
-	private int mp_account;
+	private int mpAccount;
 	
 	@ManyToMany(mappedBy = "accounts")
 	private List<User> users;
