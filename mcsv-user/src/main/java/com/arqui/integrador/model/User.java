@@ -1,9 +1,12 @@
 package com.arqui.integrador.model;
 
+import java.io.Serializable;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -23,8 +26,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
-	
+public class User implements Serializable{
+
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@Column(name = "user_id")
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -41,11 +46,17 @@ public class User {
 	
 	private String surname;
 	
-	@ManyToMany
-	@JoinTable(
-		name = "user_account",
+	@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+	@JoinTable(name = "user_account",
 		joinColumns = @JoinColumn(name = "user_id"),
-		inverseJoinColumns = @JoinColumn(name = "account_id")
-	)
+		inverseJoinColumns = @JoinColumn(name = "account_id"))
 	private List<Account> accounts;
+	
+	public void addAccount(Account account) {
+		this.accounts.add(account);
+	}
+	
+	public boolean deleteAccount(Account account) {
+		return this.accounts.remove(account);
+	}
 }
