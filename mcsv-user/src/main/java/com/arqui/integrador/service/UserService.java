@@ -1,13 +1,21 @@
 package com.arqui.integrador.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import com.arqui.integrador.dto.AccountDto;
+import com.arqui.integrador.dto.ScooterDto;
 import com.arqui.integrador.dto.UserDto;
 import com.arqui.integrador.exception.ItemNotFoundException;
 import com.arqui.integrador.exception.UserHasAccountException;
@@ -24,10 +32,12 @@ public class UserService implements IUserService{
 	private IUserRepository userRepository;
 	private IAccountRepository accountRepository;
 	private static final Logger LOG = LoggerFactory.getLogger(UserService.class);
+	private RestTemplate restTemplate;
 	
-	public UserService(IUserRepository userRepository, IAccountRepository accountRepository) {
+	public UserService(IUserRepository userRepository, IAccountRepository accountRepository, RestTemplate restTemplate) {
 		this.userRepository = userRepository;
 		this.accountRepository = accountRepository;
+		this.restTemplate = restTemplate;
 	}
 
 	@Override
@@ -46,6 +56,25 @@ public class UserService implements IUserService{
 		LOG.info("User: {}", response);
 		
 		return UserMapper.entityToDto(response);
+	}
+	
+	@Override
+	public List<ScooterDto> getNearScooters(){
+		HttpHeaders headers = new HttpHeaders();
+		HttpEntity<List<Void>> requestEntity = new HttpEntity<>(headers);
+		
+		ResponseEntity<List<ScooterDto>> response = restTemplate.exchange(
+				"Add endpoint here", 
+				HttpMethod.GET, 
+				requestEntity, 
+				new ParameterizedTypeReference<List<ScooterDto>>() {}
+		);
+		
+		if(response.getStatusCode().is2xxSuccessful()) {
+			return response.getBody();
+		} else {
+			return new ArrayList<>();
+		}
 	}
 
 	@Override

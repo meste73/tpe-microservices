@@ -3,13 +3,16 @@ package com.arqui.integrador.service;
 import java.util.List;
 
 import com.arqui.integrador.dto.AccountDto;
+import com.arqui.integrador.dto.ScooterDto;
 import com.arqui.integrador.dto.UserDto;
 
 public interface IUserService {
-
+	
 	List<UserDto> getAll();
 
 	UserDto getById(Long id);
+	
+	List<ScooterDto> getNearScooters();
 
 	UserDto create(UserDto user);
 

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.arqui.integrador.dto.AccountDto;
+import com.arqui.integrador.dto.ScooterDto;
 import com.arqui.integrador.dto.UserDto;
 
 import jakarta.validation.Valid;
@@ -34,6 +35,11 @@ public interface IUserController {
 	@ResponseBody
 	@ResponseStatus(HttpStatus.OK)
 	ResponseEntity<UserDto> getById(@PathVariable(name = "id") Long id);
+	
+	@GetMapping(value = "near-scooters", produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	@ResponseStatus(HttpStatus.OK)
+	ResponseEntity<List<ScooterDto>> getNearScooters();
 	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
