@@ -19,5 +19,5 @@ public interface IUserService {
 
 	void delete(Long id);
 
-	void deleteAccount(Long userId, AccountDto account);
+	void deleteAccount(Long userId, Long accountId);
 }

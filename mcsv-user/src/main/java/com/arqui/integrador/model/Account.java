@@ -31,14 +31,23 @@ public class Account {
 	private Long id;
 	
 	@CreationTimestamp
-	@Column(name = "date_of_sign", updatable = false)
+	@Column(name = "date_of_sign", nullable = false, updatable = false)
 	private LocalDate dateOfSign;
 	
 	private double amount;
 	
-	@Column(nullable = false)
+	@Column(name = "mp_account", nullable = false, unique = true)
 	private int mpAccount;
+	
+	@Column(name = "is_available", nullable = false)
+	private boolean isAvailable;
 	
 	@ManyToMany(mappedBy = "accounts")
 	private List<User> users;
+
+	@Override
+	public String toString() {
+		return "Account [id=" + id + ", dateOfSign=" + dateOfSign + ", amount=" + amount + ", mpAccount=" + mpAccount
+				+ ", isAvailable=" + isAvailable + "]";
+	}
 }

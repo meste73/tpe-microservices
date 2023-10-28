@@ -7,6 +7,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -43,16 +44,26 @@ public interface IAccountController {
 	@ResponseStatus(HttpStatus.OK)
 	ResponseEntity<AccountDto> update(@PathVariable(name = "id") Long id, @Valid @RequestBody AccountDto accountDto);
 	
-	@PutMapping(value = "/account/add-user/{account-id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping(value = "/account/{account-id}/add-user", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@ResponseStatus(HttpStatus.OK)
 	ResponseEntity<AccountDto> addUser(@PathVariable(name = "account-id") Long id, @Valid @RequestBody UserDto userDto);
+	
+	@PatchMapping(value = "/account/{account-id}/authorize")
+	@ResponseBody
+	@ResponseStatus(HttpStatus.OK)
+	ResponseEntity<AccountDto> authorizeAccount(@PathVariable(name = "account-id") Long id);
+	
+	@PatchMapping(value = "/account/{account-id}/unauthorize")
+	@ResponseBody
+	@ResponseStatus(HttpStatus.OK)
+	ResponseEntity<AccountDto> unauthorizeAccount(@PathVariable(name = "account-id") Long id);
 	
 	@DeleteMapping(value = "/account/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	void delete(@PathVariable(name = "id") Long id);
 	
-	@DeleteMapping(value = "/account/delete-user/{account-id}")
+	@DeleteMapping(value = "/account/{account-id}/delete-user")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	void deleteUser(@PathVariable(name = "account-id") Long id, @Valid @RequestBody UserDto userDto);
 	

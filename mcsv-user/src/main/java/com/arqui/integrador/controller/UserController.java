@@ -75,10 +75,10 @@ public class UserController implements IUserController{
 	}
 
 	@Override
-	public void deleteAccount(Long userId, AccountDto account) {
-		this.userService.deleteAccount(userId, account);
+	public void deleteAccount(Long userId,Long accountId) {
+		this.userService.deleteAccount(userId, accountId);
 		
-		LOG.info("Deleting account: {}, from user id: {}", account, userId);
+		LOG.info("Deleting account id: {}, from user id: {}", accountId, userId);
 	}
 
 }

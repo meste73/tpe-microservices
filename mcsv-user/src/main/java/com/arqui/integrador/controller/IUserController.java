@@ -45,7 +45,7 @@ public interface IUserController {
 	@ResponseStatus(HttpStatus.OK)
 	ResponseEntity<UserDto> update(@PathVariable(name = "id") Long id, @Valid @RequestBody UserDto user);
 	
-	@PutMapping(value = "/user/add-account/{user-id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping(value = "/user/{user-id}/add-account", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@ResponseStatus(HttpStatus.OK)
 	ResponseEntity<UserDto> addAccount(@PathVariable(name = "user-id") Long userId, @Valid @RequestBody AccountDto account);
@@ -54,7 +54,7 @@ public interface IUserController {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	void delete(@PathVariable(name = "id") Long id);
 	
-	@DeleteMapping(value = "/user/delete-account/{user-id}")
+	@DeleteMapping(value = "/user/{user-id}/delete-account/{account-id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	void deleteAccount(@PathVariable(name = "user-id") Long userId, @Valid @RequestBody AccountDto account);
+	void deleteAccount(@PathVariable(name = "user-id") Long userId, @PathVariable(name = "account-id") Long accountId);
 }

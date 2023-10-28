@@ -67,6 +67,24 @@ public class AccountController implements IAccountController{
 		//TODO implements addUser()
 		return null;
 	}
+	
+	@Override
+	public ResponseEntity<AccountDto> authorizeAccount(Long id){
+		AccountDto response = this.accountService.authorize(id);
+		
+		LOG.info("Authorizing account: {}", response);
+		
+		return ResponseEntity.ok(response);
+	}
+	
+	@Override
+	public ResponseEntity<AccountDto> unauthorizeAccount(Long id){
+		AccountDto response = this.accountService.unauthorize(id);
+		
+		LOG.info("Unauthorizing account: {}", response);
+		
+		return ResponseEntity.ok(response);
+	}
 
 	@Override
 	public void delete(Long id) {

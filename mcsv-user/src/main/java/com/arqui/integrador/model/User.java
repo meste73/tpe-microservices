@@ -35,15 +35,20 @@ public class User implements Serializable{
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
+	@Column(nullable = false, unique = true)
 	private String name;
 	
+	@Column(nullable = false)
 	private Long cellphone;
 	
 	@Email(regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")
+	@Column(nullable = false, unique = true)
 	private String email;
 	
+	@Column(nullable = false)
 	private String firstname;
 	
+	@Column(nullable = false)
 	private String surname;
 	
 	@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
@@ -52,11 +57,19 @@ public class User implements Serializable{
 		inverseJoinColumns = @JoinColumn(name = "account_id"))
 	private List<Account> accounts;
 	
-	public void addAccount(Account account) {
-		this.accounts.add(account);
+	public boolean addAccount(Account account) {
+		if(accounts.contains(account))
+			return false;
+		return this.accounts.add(account);
 	}
 	
 	public boolean deleteAccount(Account account) {
 		return this.accounts.remove(account);
+	}
+
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", name=" + name + ", cellphone=" + cellphone + ", email=" + email + ", firstname="
+				+ firstname + ", surname=" + surname + "]";
 	}
 }
