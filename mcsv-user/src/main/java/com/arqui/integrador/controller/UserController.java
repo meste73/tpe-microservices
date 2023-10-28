@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.arqui.integrador.dto.AccountDto;
+import com.arqui.integrador.dto.ScooterDto;
 import com.arqui.integrador.dto.UserDto;
 import com.arqui.integrador.service.IUserService;
 
@@ -36,6 +37,15 @@ public class UserController implements IUserController{
 		UserDto response = this.userService.getById(id);
 		
 		LOG.info("Getting user by id: {}", response);
+		
+		return ResponseEntity.ok(response);
+	}
+	
+	@Override
+	public ResponseEntity<List<ScooterDto>> getNearScooters(){
+		List<ScooterDto> response = this.userService.getNearScooters();
+		
+		LOG.info("Getting near scooters: {}", response);
 		
 		return ResponseEntity.ok(response);
 	}
