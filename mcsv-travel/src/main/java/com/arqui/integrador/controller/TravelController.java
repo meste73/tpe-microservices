@@ -11,15 +11,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.arqui.integrador.dto.PausedTimeResponseDto;
 import com.arqui.integrador.dto.TravelDto;
+import com.arqui.integrador.dto.TravelsScooterResponseDto;
 import com.arqui.integrador.service.TravelService;
 
 @RestController
 @RequestMapping("/travels")
 public class TravelController {
-	
+
 	private TravelService service;
 
 	public TravelController(TravelService service) {
@@ -29,37 +32,59 @@ public class TravelController {
 	@GetMapping()
 	public ResponseEntity<List<TravelDto>> getTravels() {
 		List<TravelDto> travel = service.getAll();
-		if(travel != null) {
+		if (travel != null) {
 			return ResponseEntity.ok(travel);
 		} else {
-            return ResponseEntity.notFound().build();
-        }
+			return ResponseEntity.notFound().build();
+		}
 	}
 
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<TravelDto> getTravelById(@PathVariable String id) {
 		Long id1 = Long.valueOf(id);
 		TravelDto travel = service.getById(id1);
-		if(travel != null) {
+		if (travel != null) {
 			return ResponseEntity.ok(travel);
 		} else {
-            return ResponseEntity.notFound().build();
-        }
+			return ResponseEntity.notFound().build();
+		}
 	}
 
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public void addTravel(@RequestBody TravelDto t) {
 		service.createTravel(t);
 	}
+
 	@PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public void updateTravel(@RequestBody TravelDto t, @PathVariable String id) {
 		Long id1 = Long.valueOf(id);
 		service.update(t, id1);
 	}
-	
+
 	@DeleteMapping(value = "/{id}")
 	public void deleteTravel(@PathVariable String id) {
 		Long id1 = Long.valueOf(id);
 		service.delete(id1);
+	}
+
+	@GetMapping(value = "/paused")
+	public ResponseEntity<List<PausedTimeResponseDto>> getTravelsByPausedTime() {
+		List<PausedTimeResponseDto> travel = service.getAllByPause();
+		if (travel != null) {
+			return ResponseEntity.ok(travel);
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+	}
+
+	@GetMapping(value = "/filter")
+	public ResponseEntity<List<TravelsScooterResponseDto>> getQuantityTravelsByYear(@RequestParam int year,
+			@RequestParam Long quantity) {
+		List<TravelsScooterResponseDto> travel = service.getAllByYearQuantity(year, quantity);
+		if (travel != null) {
+			return ResponseEntity.ok(travel);
+		} else {
+			return ResponseEntity.notFound().build();
+		}
 	}
 }

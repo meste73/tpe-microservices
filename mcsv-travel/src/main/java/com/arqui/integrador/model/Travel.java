@@ -30,15 +30,15 @@ public class Travel implements Serializable{
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name="id_travel")
-	private Long id_travel;
+	@Column(name="id")
+	private Long id;
 	@Column
 	private int id_account;
 	@Column
 	private int id_user;
 	@Column
-	private int id_monopatin;
-	@Column
+	private int id_scooter;
+	@Column(nullable = false, updatable = false)
 	@CreationTimestamp
 	private Timestamp start_date;
 	@CreationTimestamp
