@@ -1,7 +1,7 @@
 package com.arqui.integrador.service;
 
-import static com.arqui.integrador.util.AccountMapper.entityToDto;
 import static com.arqui.integrador.util.AccountMapper.dtoToEntity;
+import static com.arqui.integrador.util.AccountMapper.entityToDto;
 
 import java.util.List;
 
@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.arqui.integrador.dto.AccountDto;
 import com.arqui.integrador.dto.UserDto;
+import com.arqui.integrador.exception.AccountStateException;
 import com.arqui.integrador.exception.ItemNotFoundException;
 import com.arqui.integrador.model.Account;
 import com.arqui.integrador.repository.IAccountRepository;
@@ -69,6 +70,38 @@ public class AccountService implements IAccountService{
 	public AccountDto addUser(Long id, UserDto userDto) {
 		//Implements addUser()
 		return null;
+	}
+	
+	@Override
+	public AccountDto authorize(Long id) {
+		Account response = this.findById(id);
+		
+		if(response.isAvailable())
+			throw new AccountStateException("Bad request", "Account is already authorized.");
+		
+		response.setAvailable(true);
+		
+		this.accountRepository.save(response);
+		
+		LOG.info("Account authorized: {}", response);
+		
+		return entityToDto(response);
+	}
+	
+	@Override
+	public AccountDto unauthorize(Long id) {
+		Account response = this.findById(id);
+		
+		if(!response.isAvailable())
+			throw new AccountStateException("Bad request", "Account is already unauthorized.");
+		
+		response.setAvailable(false);
+		
+		this.accountRepository.save(response);
+		
+		LOG.info("Account unauthorized: {}", response);
+		
+		return entityToDto(response);
 	}
 
 	@Override

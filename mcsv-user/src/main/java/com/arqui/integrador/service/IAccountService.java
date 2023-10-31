@@ -17,6 +17,10 @@ public interface IAccountService {
 	
 	AccountDto addUser(Long id, UserDto userDto);
 	
+	AccountDto authorize(Long id);
+	
+	AccountDto unauthorize(Long id);
+	
 	void delete(Long id);
 	
 	void deleteUser(Long id, UserDto userDto);

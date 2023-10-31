@@ -11,6 +11,7 @@ public class AccountMapper {
 				.dateOfSign(account.getDateOfSign())
 				.amount(account.getAmount())
 				.mpAccount(account.getMpAccount())
+				.isAvailable(account.isAvailable())
 				.build();
 	}
 
@@ -20,6 +21,7 @@ public class AccountMapper {
 				.dateOfSign(accountDto.getDateOfSign())
 				.amount(accountDto.getAmount())
 				.mpAccount(accountDto.getMpAccount())
+				.isAvailable(accountDto.isAvailable())
 				.build();
 	}
 }
