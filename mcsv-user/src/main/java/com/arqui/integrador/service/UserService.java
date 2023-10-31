@@ -59,13 +59,14 @@ public class UserService implements IUserService{
 	}
 	
 	@Override
-	public List<ScooterDto> getNearScooters(){
+	public List<ScooterDto> getNearScooters(double latitude, double longitude){
 		HttpHeaders headers = new HttpHeaders();
 		HttpEntity<List<Void>> requestEntity = new HttpEntity<>(headers);
 		
 		ResponseEntity<List<ScooterDto>> response = restTemplate.exchange(
-				"Add endpoint here", 
-				HttpMethod.GET, 
+				//"http://10.13.29.141:8004/scooters/nearest/lat/" + latitude + "/long/" + longitude,
+				"http://127.0.0.1:8004/scooters/nearest/lat/" + latitude + "/long/" + longitude,
+				HttpMethod.GET,
 				requestEntity, 
 				new ParameterizedTypeReference<List<ScooterDto>>() {}
 		);

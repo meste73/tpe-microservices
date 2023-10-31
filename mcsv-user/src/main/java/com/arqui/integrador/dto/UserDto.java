@@ -1,5 +1,6 @@
 package com.arqui.integrador.dto;
 
+import java.io.Serializable;
 import java.util.List;
 
 import jakarta.validation.constraints.Email;
@@ -14,8 +15,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDto {
-	
+public class UserDto implements Serializable{
+
+	private static final long serialVersionUID = 1L;
+
 	private Long id;
 	
 	@NotBlank

@@ -12,7 +12,7 @@ public interface IUserService {
 
 	UserDto getById(Long id);
 	
-	List<ScooterDto> getNearScooters();
+	List<ScooterDto> getNearScooters(double latitude, double longitude);
 
 	UserDto create(UserDto user);
 
