@@ -8,6 +8,7 @@ import javax.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.arqui.integrador.dto.BillDto;
 import com.arqui.integrador.dto.PausedTimeResponseDto;
 import com.arqui.integrador.dto.TravelDto;
 import com.arqui.integrador.dto.TravelsScooterResponseDto;
@@ -51,7 +52,7 @@ public class TravelService {
 		Travel t1 = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado"));
 		t1 = mapper.convertValue(t, Travel.class);
 		t1.setCost(t.getCost());
-		t1.setEnding_date(t.getEnding_date());
+		t1.setEndingDate(t.getEnding_date());
 		t1.setKm(t.getKm());
 
 		repository.save(t1);
@@ -67,5 +68,9 @@ public class TravelService {
 
 	public List<TravelsScooterResponseDto> getAllByYearQuantity(int year, Long quantity) {
 		return repository.getQuantityByYear(year, quantity);
+	}
+
+	public BillDto getBills(int year, int month1, int month2) {
+		return repository.getBillsByDate(year, month1, month2);
 	}
 }

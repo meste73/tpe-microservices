@@ -19,7 +19,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name="Travel")
+@Table(name = "Travel")
 @Data
 @Builder
 @NoArgsConstructor
@@ -32,24 +32,24 @@ public class Travel implements Serializable{
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="id")
 	private Long id;
-	@Column
-	private int id_account;
-	@Column
-	private int id_user;
-	@Column
-	private int id_scooter;
-	@Column(nullable = false, updatable = false)
+	@Column(name="id_account")
+	private int idAccount;
+	@Column(name="id_user")
+	private int idUser;
+	@Column(name="id_scooter")
+	private int idScooter;
+	@Column(name="start_date", nullable = false, updatable = false)
 	@CreationTimestamp
-	private Timestamp start_date;
+	private Timestamp startDate;
 	@CreationTimestamp
-	@Column
-	private Timestamp ending_date;
-	@Column
-	private int pause_time;
-	@Column
+	@Column(name="ending_date")
+	private Timestamp endingDate;
+	@Column(name="pause_time")
+	private int pauseTime;
+	@Column(name="km")
 	private BigDecimal km;
-	@Column
+	@Column(name="cost")
 	private BigDecimal cost;
-	@Column
+	@Column(name="paused")
 	private boolean paused;	
 }

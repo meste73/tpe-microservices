@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.arqui.integrador.dto.BillDto;
 import com.arqui.integrador.dto.PausedTimeResponseDto;
 import com.arqui.integrador.dto.TravelDto;
 import com.arqui.integrador.dto.TravelsScooterResponseDto;
@@ -81,6 +82,17 @@ public class TravelController {
 	public ResponseEntity<List<TravelsScooterResponseDto>> getQuantityTravelsByYear(@RequestParam int year,
 			@RequestParam Long quantity) {
 		List<TravelsScooterResponseDto> travel = service.getAllByYearQuantity(year, quantity);
+		if (travel != null) {
+			return ResponseEntity.ok(travel);
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+	}
+
+	@GetMapping(value = "/billing")
+	public ResponseEntity<BillDto> getBillingByDate(@RequestParam int year, @RequestParam int month1,
+			@RequestParam int month2) {
+		BillDto travel = service.getBills(year, month1, month2);
 		if (travel != null) {
 			return ResponseEntity.ok(travel);
 		} else {
