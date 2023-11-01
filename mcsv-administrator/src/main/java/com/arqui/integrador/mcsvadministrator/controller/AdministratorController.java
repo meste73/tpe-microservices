@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.arqui.integrador.mcsvadministrator.dto.AdministratorDTO;
+import com.arqui.integrador.mcsvadministrator.dto.TravelsByTotalBillingAmount;
+import com.arqui.integrador.mcsvadministrator.dto.TravelsByYearsDTO;
 import com.arqui.integrador.mcsvadministrator.service.IAdministratorService;
 
 import jakarta.validation.Valid;
@@ -66,5 +68,30 @@ public class AdministratorController implements IAdministratorController {
 		
 		LOG.info("Deleting administrator with id: {}", id);
     }
+
+
+    @Override
+    public void unauthorizeAccount(Long id) {
+        this.administratorService.updateStatusAccount(id , "unauthorize");
+    }
+
+    @Override
+    public void authorizeAccount(Long id) {
+       this.administratorService.updateStatusAccount( id , "authorize");
+    }
+
+    @Override
+    public List<TravelsByYearsDTO> getTravelsByYears( int year , int quantity ) {
+       return this.administratorService.getTravelsByYears( year ,  quantity );
+    }
+
+    @Override
+    public List<TravelsByTotalBillingAmount> getTravelsByTotalBillingAmounts(int year, int month1, int month2) {
+        
+        return this.administratorService.getTravelsByTotalBillingAmounts(year,month1,month2);
+    }
+
+
+
 
 }
