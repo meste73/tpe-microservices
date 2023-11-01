@@ -1,5 +1,6 @@
 package com.arqui.integrador.mcsvadministrator.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.http.MediaType;
@@ -80,4 +81,8 @@ public interface IAdministratorController {
 	@ResponseStatus(HttpStatus.OK)
 	List<ScooterOperationDTO>getScooterInOperation();
 	
+	@PutMapping("/travels/tarifa?value={value}&date{date}")
+	@ResponseStatus(HttpStatus.OK)
+	void setNewFare(@PathVariable (name="value") double value, @PathVariable (name="date") LocalDate date );
+	//TODO Preguntar como recibir el Date, y si hay que poner algun parseo.
 }

@@ -1,5 +1,6 @@
 package com.arqui.integrador.mcsvadministrator.service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,11 +10,13 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.arqui.integrador.mcsvadministrator.dto.AdministratorDTO;
+import com.arqui.integrador.mcsvadministrator.dto.FareNewPriceDTO;
 import com.arqui.integrador.mcsvadministrator.dto.ScooterForMaintenanceDTO;
 import com.arqui.integrador.mcsvadministrator.dto.ScooterOperationDTO;
 import com.arqui.integrador.mcsvadministrator.dto.TravelsByTotalBillingAmount;
@@ -178,4 +181,21 @@ public class AdministratorService implements IAdministratorService {
         return new HttpEntity<>(headers);
     }
 
+    @Override
+    public void setNewFare(double value, LocalDate date) {
+        FareNewPriceDTO f = FareNewPriceDTO.builder().date(date).price(value).build();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<FareNewPriceDTO> requestEntity = new HttpEntity<>(f, headers);
+
+         restTemplate.exchange(
+                "http://127.0.0.1:8004/Fares/", // Preguntar Endpoint, 
+                HttpMethod.POST, requestEntity,
+                new ParameterizedTypeReference<Void>() {
+                });
+
+        LOG.info("Updating Fare whit price: {} and Date: {}" , value , date  );
+                
+    }
 }

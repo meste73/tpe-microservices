@@ -1,5 +1,6 @@
 package com.arqui.integrador.mcsvadministrator.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import com.arqui.integrador.mcsvadministrator.dto.AdministratorDTO;
@@ -29,5 +30,7 @@ public interface IAdministratorService {
     List<Long> getAndSetScootersInMaintenance();
 
     List<ScooterOperationDTO> getScooterInOperation();
+
+    void setNewFare(double value, LocalDate date);
 
 }

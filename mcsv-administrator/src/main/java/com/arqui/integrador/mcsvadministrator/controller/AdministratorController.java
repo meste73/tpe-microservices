@@ -1,5 +1,6 @@
 package com.arqui.integrador.mcsvadministrator.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -103,6 +104,11 @@ public class AdministratorController implements IAdministratorController {
     @Override
     public List<ScooterOperationDTO> getScooterInOperation() {
         return this.administratorService.getScooterInOperation();
+    }
+
+    @Override
+    public void setNewFare(double value, LocalDate date) {
+        this.administratorService.setNewFare( value, date);
     }
 
     

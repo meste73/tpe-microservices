@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cglib.core.Local;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -89,8 +90,13 @@ public class MaintenanceService implements IMaintenanceService {
                 () -> new ItemNotFoundException("Item not found", "Maintenance with id: " + id + " not found."));
     }
 
+
+
+
+    
+
     @Override
-    public List<ScooterForMaintenanceDTO> getScootersForMaintenance() {
+    public List<Long> getScootersForMaintenance() {
 
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<List<Void>> requestEntity = new HttpEntity<>(headers);
@@ -110,28 +116,51 @@ public class MaintenanceService implements IMaintenanceService {
         }
     }
 
-    private List<ScooterForMaintenanceDTO> getIdsForMaintenance(List<ScooterForMaintenanceDTO> listForFilter) {
+    private List<Long> getIdsForMaintenance(List<ScooterForMaintenanceDTO> listForFilter) {
         List<Long> result = new ArrayList<>();
+        //Si tienen mas de 100 hago un mantenimiento nuevo y los dejo en la lista a retornar
         listForFilter.forEach(e -> {
             if (e.getKmsTraveled() >= 100) {
                 Maintenance m = Maintenance.builder().start_date(LocalDate.now()).id_scooter(e.getId())
                         .scooter_km(e.getKmsTraveled()).build();
                 this.maintenanceRepository.save(m);
                 result.add(e.getId());
-            } else {
-                listForFilter.remove(e);
-            }
+            } 
+            // esto ya no es necesario
+            // else {
+            //     listForFilter.remove(e); // si no los quito de la lista a retornar
+            //}
         });
 
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<List<Long>> requestEntity = new HttpEntity<>( result , headers );
 
         restTemplate.exchange(
-                "http://127.0.0.1:8004/scooters", // TODO Cambiar la URL
+                "http://127.0.0.1:8004/scooters",
                 HttpMethod.PUT,
                 requestEntity,
                 new ParameterizedTypeReference<List<Long>>() {});
-
-        return listForFilter;
+        return result;
     }
+
+    @Override
+    public MaintenanceDTO finalizeMaintenance(Long id) {
+        Maintenance m = this.findById(id);
+        m.setEnd_date(LocalDate.now());
+        MaintenanceDTO maintenanceDTO = MaintenanceDTO.builder()
+        .id_maintenance(m.getId_maintenance())
+        .start_date(m.getStart_date())
+        .end_date(m.getEnd_date())
+        .id_scooter(m.getId_scooter())
+        .scooter_km(m.getScooter_km())
+        .build();
+
+        this.maintenanceRepository.save(dtoToEntity(maintenanceDTO));
+
+        LOG.info("Maintenance finalization updated: {}", maintenanceDTO);
+
+        return maintenanceDTO;
+    }
+
+
 }

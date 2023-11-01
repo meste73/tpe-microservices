@@ -2,8 +2,8 @@ package com.arqui.integrador.mcsvmaintenance.service;
 
 import java.util.List;
 
+
 import com.arqui.integrador.mcsvmaintenance.dto.MaintenanceDTO;
-import com.arqui.integrador.mcsvmaintenance.dto.ScooterForMaintenanceDTO;
 
 public interface IMaintenanceService {
     
@@ -17,6 +17,8 @@ public interface IMaintenanceService {
 		
 	void delete(Long id);
 
-    List<ScooterForMaintenanceDTO> getScootersForMaintenance();
+    List<Long> getScootersForMaintenance();
+
+   MaintenanceDTO finalizeMaintenance(Long id);
 	
 }

@@ -21,15 +21,14 @@ import com.arqui.integrador.mcsvmaintenance.dto.ScooterForMaintenanceDTO;
 
 import jakarta.validation.Valid;
 
-
 @RequestMapping("/maintenance")
 public interface IMaintenanceController {
-    
-	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)    
+
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<MaintenanceDTO>> getAll();
-	
+	@ResponseStatus(HttpStatus.OK)
+	public ResponseEntity<List<MaintenanceDTO>> getAll();
+
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@ResponseStatus(HttpStatus.OK)
@@ -40,18 +39,22 @@ public interface IMaintenanceController {
 	@ResponseStatus(HttpStatus.CREATED)
 	ResponseEntity<MaintenanceDTO> create(@Valid @RequestBody MaintenanceDTO maintenenceDto);
 
-	
 	@PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@ResponseStatus(HttpStatus.OK)
-	ResponseEntity<MaintenanceDTO> update(@PathVariable(name = "id") Long id, @Valid @RequestBody MaintenanceDTO maintenenceDto);
+	ResponseEntity<MaintenanceDTO> update(@PathVariable(name = "id") Long id,
+			@Valid @RequestBody MaintenanceDTO maintenenceDto);
 
-	@DeleteMapping (value = "/{id}")
+	@DeleteMapping(value = "/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	void delete (@PathVariable(name = "id") Long id);
+	void delete(@PathVariable(name = "id") Long id);
 
-	@GetMapping(value = "/scooters-for-maintenance")
+	@GetMapping(value = "/scooters/for-maintenance") // Arreglar con y sin pausa
 	@ResponseStatus(HttpStatus.OK)
-	List<ScooterForMaintenanceDTO> getScootersForMaintenance();
-    
+	List<Long> getScootersForMaintenance();
+
+	@PutMapping(value = "/finalize/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseStatus(HttpStatus.OK)
+	ResponseEntity<MaintenanceDTO> finalizeMaintenance(@PathVariable(name = "id") Long id  );
+
 }

@@ -38,9 +38,9 @@ public class MaintenanceController implements IMaintenanceController {
     public ResponseEntity<MaintenanceDTO> create(@Valid MaintenanceDTO maintenenceDto) {
         MaintenanceDTO response = this.maintenanceService.create(maintenenceDto);
 
-        LOG.info("Creating maitenance : {}" , response);
+        LOG.info("Creating maitenance : {}", response);
 
-        return new ResponseEntity<>(response , HttpStatus.CREATED);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @Override
@@ -55,22 +55,30 @@ public class MaintenanceController implements IMaintenanceController {
 
     @Override
     public ResponseEntity<MaintenanceDTO> update(Long id, @Valid MaintenanceDTO maintenenceDto) {
-        MaintenanceDTO response = this.maintenanceService.update(id, maintenenceDto) ;
-		
+        MaintenanceDTO response = this.maintenanceService.update(id, maintenenceDto);
+
         LOG.info("Updating maitenance: {} with id: {}", maintenenceDto, id);
-        
+
         return ResponseEntity.ok(response);
     }
 
     @Override
     public void delete(Long id) {
         this.maintenanceService.delete(id);
-        LOG.info("Deletin maintenance with id : {}" , id);
+        LOG.info("Deletin maintenance with id : {}", id);
     }
 
+    @Override
+    public List<Long> getScootersForMaintenance() {
+        return this.maintenanceService.getScootersForMaintenance();
+    }
 
     @Override
-    public List<ScooterForMaintenanceDTO> getScootersForMaintenance() {
-        return this.maintenanceService.getScootersForMaintenance();
+    public ResponseEntity<MaintenanceDTO> finalizeMaintenance(Long id) {
+        MaintenanceDTO response = this.maintenanceService.finalizeMaintenance(id);
+
+        LOG.info("Updating finalization maitenance with id: {}", id);
+
+        return ResponseEntity.ok(response);
     }
 }
