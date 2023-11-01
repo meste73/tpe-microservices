@@ -29,15 +29,13 @@ public class Maintenance implements Serializable{
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id_maintenance;
 
-    private String nombre;
-
 	private LocalDate start_date;
  
 	private LocalDate end_date;
 
     private Long id_scooter;
 
-    private int scooter_km;
+    private float scooter_km;
 
     // private Timestamp scooter_usage_time; 
 

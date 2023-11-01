@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.arqui.integrador.mcsvmaintenance.dto.MaintenanceDTO;
+import com.arqui.integrador.mcsvmaintenance.dto.ScooterForMaintenanceDTO;
 
 import jakarta.validation.Valid;
 
@@ -49,6 +50,8 @@ public interface IMaintenanceController {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	void delete (@PathVariable(name = "id") Long id);
 
-
+	@GetMapping(value = "/scooters-for-maintenance")
+	@ResponseStatus(HttpStatus.OK)
+	List<ScooterForMaintenanceDTO> getScootersForMaintenance();
     
 }

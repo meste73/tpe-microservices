@@ -31,7 +31,7 @@ public class MaintenanceDTO {
     private Long id_scooter;
     
     @NotNull
-    private int scooter_km;
+    private float scooter_km;
     
     // @NotNull
     // private Timestamp scooter_usage_time; 

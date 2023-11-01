@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.arqui.integrador.mcsvmaintenance.dto.MaintenanceDTO;
+import com.arqui.integrador.mcsvmaintenance.dto.ScooterForMaintenanceDTO;
 import com.arqui.integrador.mcsvmaintenance.service.IMaintenanceService;
 
 import jakarta.validation.Valid;
@@ -65,5 +66,11 @@ public class MaintenanceController implements IMaintenanceController {
     public void delete(Long id) {
         this.maintenanceService.delete(id);
         LOG.info("Deletin maintenance with id : {}" , id);
+    }
+
+
+    @Override
+    public List<ScooterForMaintenanceDTO> getScootersForMaintenance() {
+        return this.maintenanceService.getScootersForMaintenance();
     }
 }
