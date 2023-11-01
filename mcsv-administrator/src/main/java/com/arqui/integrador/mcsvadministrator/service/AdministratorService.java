@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.arqui.integrador.mcsvadministrator.dto.AdministratorDTO;
+import com.arqui.integrador.mcsvadministrator.dto.ScooterForMaintenanceDTO;
+import com.arqui.integrador.mcsvadministrator.dto.ScooterOperationDTO;
 import com.arqui.integrador.mcsvadministrator.dto.TravelsByTotalBillingAmount;
 import com.arqui.integrador.mcsvadministrator.dto.TravelsByYearsDTO;
 import com.arqui.integrador.mcsvadministrator.model.Administrator;
@@ -86,12 +88,12 @@ public class AdministratorService implements IAdministratorService {
     }
 
     @Override
-    public void updateStatusAccount(Long id , String status) {
-        HttpHeaders headers = new HttpHeaders();
-        HttpEntity<List<Void>> requestEntity = new HttpEntity<>(headers);
+    public void updateStatusAccount(Long id, String status) {
+
+        HttpEntity<Void> requestEntity = getRequestEntity();
 
         restTemplate.exchange(
-                "http://127.0.0.1:8006/accounts/" + id + "/" + status+ "",
+                "http://127.0.0.1:8006/accounts/" + id + "/" + status + "",
                 HttpMethod.PATCH,
                 requestEntity,
                 new ParameterizedTypeReference<List<Void>>() {
@@ -100,42 +102,80 @@ public class AdministratorService implements IAdministratorService {
 
     @Override
     public List<TravelsByYearsDTO> getTravelsByYears(int year, int quantity) {
-        HttpHeaders headers = new HttpHeaders();
-        HttpEntity <Void> requestEntity = new HttpEntity<>(headers);
 
-        ResponseEntity <List<TravelsByYearsDTO>> result = restTemplate.exchange(
-                "http://127.0.0.1:8005//travels/filter?year="+year+"&quantity="+quantity,
+        HttpEntity<Void> requestEntity = getRequestEntity();
+
+        ResponseEntity<List<TravelsByYearsDTO>> result = restTemplate.exchange(
+                "http://127.0.0.1:8005//travels/filter?year=" + year + "&quantity=" + quantity,
                 HttpMethod.GET,
                 requestEntity,
                 new ParameterizedTypeReference<List<TravelsByYearsDTO>>() {
                 });
-                if(result.getStatusCode().is2xxSuccessful()){
-                    return result.getBody();
-                }
-                else{
-                    return new ArrayList<>() ; // TODO : Devolver un Error
-                }
+        if (result.getStatusCode().is2xxSuccessful()) {
+            return result.getBody();
+        } else {
+            return new ArrayList<>(); // TODO : Devolver un Error
         }
+    }
 
     @Override
     public List<TravelsByTotalBillingAmount> getTravelsByTotalBillingAmounts(int year, int month1, int month2) {
-       
-        HttpHeaders headers = new HttpHeaders();
-        HttpEntity <Void> requestEntity = new HttpEntity<>(headers);
 
-        ResponseEntity <List<TravelsByTotalBillingAmount>> result = restTemplate.exchange(
-                "http://0.0.0.0:8005/travels/billing?year="+year+"&month1="+month1+"&month2="+month2,
+        HttpEntity<Void> requestEntity = getRequestEntity();
+
+        ResponseEntity<List<TravelsByTotalBillingAmount>> result = restTemplate.exchange(
+                "http://0.0.0.0:8005/travels/billing?year=" + year + "&month1=" + month1 + "&month2=" + month2,
                 HttpMethod.GET,
                 requestEntity,
                 new ParameterizedTypeReference<List<TravelsByTotalBillingAmount>>() {
                 });
-                if(result.getStatusCode().is2xxSuccessful()){
-                    return result.getBody();
-                }
-                else{
-                    return new ArrayList<>() ; // TODO : Devolver un Error
-                }
+        if (result.getStatusCode().is2xxSuccessful()) {
+            return result.getBody();
+        } else {
+            return new ArrayList<>(); // TODO : Devolver un Error
+        }
     }
-        
+
+    @Override
+    public List<Long> getAndSetScootersInMaintenance() {
+
+        HttpEntity<Void> requestEntity = getRequestEntity();
+
+        // Llamo a mantenimiento y le pido los ids de los que estan en mantenimiento
+        ResponseEntity<List<Long>> allNewsInMaintenance = restTemplate.exchange(
+                "http://127.0.0.1:8003/maintenance/scooters-for-maintenance",
+                HttpMethod.GET, requestEntity,
+                new ParameterizedTypeReference<List<Long>>() {
+                });
+
+        if (allNewsInMaintenance.getStatusCode().is2xxSuccessful()) {
+            return allNewsInMaintenance.getBody();
+        } else {
+            return new ArrayList<>(); // TODO : Devolver un Error
+        }
+    }
+
+    @Override
+    public List<ScooterOperationDTO> getScooterInOperation() {
+        HttpEntity<Void> requestEntity = getRequestEntity();
+        ResponseEntity<List<ScooterOperationDTO>> result = restTemplate.exchange(
+                "http://127.0.0.1:8004/scooters/in-operation",
+                HttpMethod.GET, requestEntity,
+                new ParameterizedTypeReference<List<ScooterOperationDTO>>() {
+                });
+
+        if (result.getStatusCode().is2xxSuccessful()) {
+            return result.getBody();
+        } else {
+            return new ArrayList<>(); // TODO : Devolver un Error
+        }
+    }
+
+    private HttpEntity<Void> getRequestEntity() {
+
+        HttpHeaders headers = new HttpHeaders();
+
+        return new HttpEntity<>(headers);
+    }
 
 }

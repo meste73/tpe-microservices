@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.arqui.integrador.mcsvadministrator.dto.AdministratorDTO;
+import com.arqui.integrador.mcsvadministrator.dto.ScooterForMaintenanceDTO;
+import com.arqui.integrador.mcsvadministrator.dto.ScooterOperationDTO;
 import com.arqui.integrador.mcsvadministrator.dto.TravelsByTotalBillingAmount;
 import com.arqui.integrador.mcsvadministrator.dto.TravelsByYearsDTO;
 import com.arqui.integrador.mcsvadministrator.service.IAdministratorService;
@@ -70,6 +72,8 @@ public class AdministratorController implements IAdministratorController {
     }
 
 
+
+
     @Override
     public void unauthorizeAccount(Long id) {
         this.administratorService.updateStatusAccount(id , "unauthorize");
@@ -91,7 +95,17 @@ public class AdministratorController implements IAdministratorController {
         return this.administratorService.getTravelsByTotalBillingAmounts(year,month1,month2);
     }
 
+    @Override
+    public List<Long> getAndSetScootersInMaintenance() {
+        return this.administratorService.getAndSetScootersInMaintenance();
+    }
 
+    @Override
+    public List<ScooterOperationDTO> getScooterInOperation() {
+        return this.administratorService.getScooterInOperation();
+    }
+
+    
 
 
 }

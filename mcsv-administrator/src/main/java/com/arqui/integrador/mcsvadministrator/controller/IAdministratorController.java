@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.arqui.integrador.mcsvadministrator.dto.AdministratorDTO;
+import com.arqui.integrador.mcsvadministrator.dto.ScooterForMaintenanceDTO;
+import com.arqui.integrador.mcsvadministrator.dto.ScooterOperationDTO;
 import com.arqui.integrador.mcsvadministrator.dto.TravelsByTotalBillingAmount;
 import com.arqui.integrador.mcsvadministrator.dto.TravelsByYearsDTO;
 
@@ -65,7 +67,17 @@ public interface IAdministratorController {
 
 	@GetMapping("/travels/billing?year=2023&month1=1&month2=12")
 	@ResponseStatus(HttpStatus.OK)
-	List<TravelsByTotalBillingAmount> getTravelsByTotalBillingAmounts( 	@PathVariable (name = "year") int year , 
-																		@PathVariable (name = "month1") int month1,
-																		@PathVariable (name = "month2") int month2);
+	List<TravelsByTotalBillingAmount> getTravelsByTotalBillingAmounts( 	
+		@PathVariable (name = "year") int year , 
+		@PathVariable (name = "month1") int month1,
+		@PathVariable (name = "month2") int month2);
+
+	@GetMapping("/scooters/for-maintenance")												
+	@ResponseStatus(HttpStatus.OK)
+	List<Long>getAndSetScootersInMaintenance();
+	
+	@GetMapping("/scooters/in-operation")
+	@ResponseStatus(HttpStatus.OK)
+	List<ScooterOperationDTO>getScooterInOperation();
+	
 }
