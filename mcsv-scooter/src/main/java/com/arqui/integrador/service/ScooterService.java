@@ -154,7 +154,7 @@ public class ScooterService implements IScooterService{
 	public List<ScooterDTO> getAllAvailable(String order) {
 		List<ScooterDTO> response = new ArrayList<>();
 		
-		this.scooterRepository.findAllAvailable(order).forEach(e -> 
+		this.scooterRepository.findAllAvailable(order, true).forEach(e -> 
 			response.add(e));
 		
 		LOG.info("Scooters: {} Quantity: {}", response, response.size());
@@ -175,7 +175,7 @@ public class ScooterService implements IScooterService{
 	public List<ScooterDTO> getAllDisable(String order) {
 		List<ScooterDTO> response = new ArrayList<>();
 		
-		this.scooterRepository.findAllDisable(order).forEach(e -> 
+		this.scooterRepository.findAllAvailable(order, false).forEach(e -> 
 			response.add(e));
 		
 		LOG.info("Scooters: {} Quantity: {}", response, response.size());

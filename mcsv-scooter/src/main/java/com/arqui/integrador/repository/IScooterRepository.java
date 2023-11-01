@@ -38,17 +38,10 @@ public interface IScooterRepository extends JpaRepository<Scooter, Integer>{
 			+ "s.id, s.enabled, s.kmsTraveled, s.usedTime, s.latitude, "
 			+ "s.longitude, s.stationId) "
 			+ "FROM com.arqui.integrador.model.Scooter s "
-			+ "WHERE s.enabled = true "
+			+ "WHERE s.enabled = :enabled "
 			+ "ORDER BY :order")
-	List<ScooterDTO> findAllAvailable(@Param ("order") String order);
-	
-	@Query("SELECT new com.arqui.integrador.dto.ScooterDTO( "
-			+ "s.id, s.enabled, s.kmsTraveled, s.usedTime, s.latitude, "
-			+ "s.longitude, s.stationId) "
-			+ "FROM com.arqui.integrador.model.Scooter s "
-			+ "WHERE s.enabled = false "
-			+ "ORDER BY :order")
-	List<ScooterDTO> findAllDisable(@Param ("order") String order);
+	List<ScooterDTO> findAllAvailable(@Param ("order") String order,
+										@Param ("enabled") boolean enabled);
 	
 	@Modifying
 	@Query("UPDATE Scooter s SET s.enabled = false "
