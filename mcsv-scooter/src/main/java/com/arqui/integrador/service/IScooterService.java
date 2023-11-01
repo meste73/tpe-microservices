@@ -28,6 +28,8 @@ public interface IScooterService {
 
 	List<ScooterDTO> getAllAvailable(String order);
 	
+	List<ScooterDTO> getAllDisable(String order);
+	
 	void updateScootersMaintenance(ScooterListDTO ids);
 
 }

@@ -31,12 +31,20 @@ public class ScooterController implements IScooterController {
 
 	@Override
 	public ResponseEntity<List<ScooterDTO>> getAll(String order, Boolean available) {
-		if(available) {
-			List<ScooterDTO> response = this.scooterService.getAllAvailable(order);
-			
-			LOG.info("Getting all enable scooters: {} order by: {}", response, order);
-			
-			return ResponseEntity.ok(response);
+		if(available!=null) {
+			if(available) {
+				List<ScooterDTO> response = this.scooterService.getAllAvailable(order);
+				
+				LOG.info("Getting all enable scooters: {} order by: {}", response, order);
+				
+				return ResponseEntity.ok(response);
+			}else {
+				List<ScooterDTO> response = this.scooterService.getAllDisable(order);
+				
+				LOG.info("Getting all disable scooters: {} order by: {}", response, order);
+				
+				return ResponseEntity.ok(response);
+			}
 		}else {
 			List<ScooterDTO> response = this.scooterService.getAll(order);
 			
@@ -44,6 +52,7 @@ public class ScooterController implements IScooterController {
 				
 			return ResponseEntity.ok(response);
 		}
+		
 	}
 
 	@Override

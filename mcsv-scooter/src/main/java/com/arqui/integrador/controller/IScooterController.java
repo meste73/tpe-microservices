@@ -34,12 +34,12 @@ public interface IScooterController {
 	@ResponseBody
 	ResponseEntity<List<ScooterDTO>> getAll(
 			@RequestParam(value = "orderBy", defaultValue = "id") String order,
-			@RequestParam(value = "available", defaultValue = "false") Boolean available);
+			@RequestParam(value = "available", required = false) Boolean available);
 	
 	@GetMapping(value = "/report" ,produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
 	@ResponseBody
-	ResponseEntity<List<ScooterReportDTO>> getScooterReport(@RequestParam(value = "pause_time", defaultValue = "false") Boolean pause_time);
+	ResponseEntity<List<ScooterReportDTO>> getScooterReport(@RequestParam(value = "pause-time", defaultValue = "false") Boolean pause_time);
 	
 	@GetMapping(value = "/in-operation", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)

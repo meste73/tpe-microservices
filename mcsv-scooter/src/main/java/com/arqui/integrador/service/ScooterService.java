@@ -170,5 +170,17 @@ public class ScooterService implements IScooterService{
 		LOG.info("Scooters succesfully updated.");
 		
 	}
+
+	@Override
+	public List<ScooterDTO> getAllDisable(String order) {
+		List<ScooterDTO> response = new ArrayList<>();
+		
+		this.scooterRepository.findAllDisable(order).forEach(e -> 
+			response.add(e));
+		
+		LOG.info("Scooters: {} Quantity: {}", response, response.size());
+		
+		return response;
+	}
 	
 }
