@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.arqui.integrador.dto.BillDto;
 import com.arqui.integrador.dto.PausedTimeResponseDto;
+import com.arqui.integrador.dto.PriceDto;
 import com.arqui.integrador.dto.TravelDto;
 import com.arqui.integrador.dto.TravelsScooterResponseDto;
 import com.arqui.integrador.service.TravelService;
@@ -98,5 +99,10 @@ public class TravelController {
 		} else {
 			return ResponseEntity.notFound().build();
 		}
+	}
+	
+	@PostMapping(value = "/price", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public void createNewPrice(@RequestBody PriceDto p) {
+		service.newPrice(p);
 	}
 }

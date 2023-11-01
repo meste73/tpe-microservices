@@ -10,8 +10,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.arqui.integrador.dto.BillDto;
 import com.arqui.integrador.dto.PausedTimeResponseDto;
+import com.arqui.integrador.dto.PriceDto;
 import com.arqui.integrador.dto.TravelDto;
 import com.arqui.integrador.dto.TravelsScooterResponseDto;
+import com.arqui.integrador.model.Price;
 import com.arqui.integrador.model.Travel;
 import com.arqui.integrador.repository.TravelRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -72,5 +74,10 @@ public class TravelService {
 
 	public BillDto getBills(int year, int month1, int month2) {
 		return repository.getBillsByDate(year, month1, month2);
+	}
+	
+	public void newPrice(PriceDto p) {
+		Price p1 = mapper.convertValue(p, Price.class);
+		repository.save(p1);
 	}
 }

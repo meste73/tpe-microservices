@@ -34,6 +34,6 @@ public class Price implements Serializable {
 	private BigDecimal price_by_hour;
 	@Column(name = "rate_of_increase")
 	private BigDecimal rate_of_increase;
-	@Column(name = "fecha_actual")
-	private Timestamp fechaActual;
+	@Column(name = "actual_date")
+	private Timestamp actual_date;
 }
