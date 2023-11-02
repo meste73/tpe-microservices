@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.arqui.integrador.mcsvmaintenance.config.MaintenanceConfig;
+import com.arqui.integrador.mcsvmaintenance.dto.ListOfIdsToUpdateDTO;
 import com.arqui.integrador.mcsvmaintenance.dto.MaintenanceDTO;
 import com.arqui.integrador.mcsvmaintenance.dto.ScooterForMaintenanceDTO;
 import com.arqui.integrador.mcsvmaintenance.exeption.ItemNotFoundException;
@@ -96,51 +97,53 @@ public class MaintenanceService implements IMaintenanceService {
     
 
     @Override
-    public List<Long> getScootersForMaintenance() {
+    public List<Long> getScootersForMaintenance( Boolean available) {
 
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<List<Void>> requestEntity = new HttpEntity<>(headers);
 
         ResponseEntity<List<ScooterForMaintenanceDTO>> response = restTemplate.exchange(
-                "http://127.0.0.1:8004/scooters?available=true",
+                // "http://127.0.0.1:8004/scooters?available="+available,
+                "http://127.0.0.1:8004/scooters?available="+available,
                 HttpMethod.GET,
                 requestEntity,
                 new ParameterizedTypeReference<List<ScooterForMaintenanceDTO>>() {
                 });
 
         if (response.getStatusCode().is2xxSuccessful()) {
-
             return getIdsForMaintenance(response.getBody());
         } else {
+            
             return new ArrayList<>(); // TODO Arrojar exception
         }
     }
 
     private List<Long> getIdsForMaintenance(List<ScooterForMaintenanceDTO> listForFilter) {
-        List<Long> result = new ArrayList<>();
+        List<Long> list = new ArrayList<>();
         //Si tienen mas de 100 hago un mantenimiento nuevo y los dejo en la lista a retornar
         listForFilter.forEach(e -> {
-            if (e.getKmsTraveled() >= 100) {
+            if (e.getKmsTraveled() >= 10) {
                 Maintenance m = Maintenance.builder().start_date(LocalDate.now()).id_scooter(e.getId())
                         .scooter_km(e.getKmsTraveled()).build();
                 this.maintenanceRepository.save(m);
-                result.add(e.getId());
+                list.add(e.getId());
             } 
             // esto ya no es necesario
             // else {
             //     listForFilter.remove(e); // si no los quito de la lista a retornar
             //}
         });
-
+        
+        // LOG.info("Las cosas que nos trajimos : {}" , result );
         HttpHeaders headers = new HttpHeaders();
-        HttpEntity<List<Long>> requestEntity = new HttpEntity<>( result , headers );
+        HttpEntity<ListOfIdsToUpdateDTO> requestEntity = new HttpEntity<>( ListOfIdsToUpdateDTO.builder().list(list).build() , headers );
 
         restTemplate.exchange(
                 "http://127.0.0.1:8004/scooters",
                 HttpMethod.PUT,
                 requestEntity,
-                new ParameterizedTypeReference<List<Long>>() {});
-        return result;
+                new ParameterizedTypeReference<ListOfIdsToUpdateDTO>() {});
+        return list;
     }
 
     @Override

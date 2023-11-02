@@ -14,10 +14,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.arqui.integrador.mcsvadministrator.dto.AdministratorDTO;
+import com.arqui.integrador.mcsvadministrator.dto.FareDTO;
 import com.arqui.integrador.mcsvadministrator.dto.ScooterForMaintenanceDTO;
 import com.arqui.integrador.mcsvadministrator.dto.ScooterOperationDTO;
 import com.arqui.integrador.mcsvadministrator.dto.TravelsByTotalBillingAmount;
@@ -62,27 +64,26 @@ public interface IAdministratorController {
 	void authorizeAccount(@PathVariable(name = "id") Long id);
 
 	// FRAN 8005
-	@GetMapping("/travels/filter?year={year}&quantity={quantity}")
+	@GetMapping("/travels/filter")
 	@ResponseStatus(HttpStatus.OK)
-	List<TravelsByYearsDTO> getTravelsByYears( @PathVariable (name = "year") int year , @PathVariable (name = "quantity") int quantity );
+	List<TravelsByYearsDTO> getTravelsByYears( @RequestParam (value = "year") int year , @RequestParam (value = "quantity") int quantity );
 
-	@GetMapping("/travels/billing?year=2023&month1=1&month2=12")
+	@GetMapping("/travels/billing")
 	@ResponseStatus(HttpStatus.OK)
-	List<TravelsByTotalBillingAmount> getTravelsByTotalBillingAmounts( 	
-		@PathVariable (name = "year") int year , 
-		@PathVariable (name = "month1") int month1,
-		@PathVariable (name = "month2") int month2);
+	TravelsByTotalBillingAmount getTravelsByTotalBillingAmounts( 	
+		@RequestParam (value = "year") int year , 
+		@RequestParam (value = "month1") int month1,
+		@RequestParam (value = "month2") int month2);
 
-	@GetMapping("/scooters/for-maintenance")												
+	@GetMapping("/scooters/for-maintenance?available={available}")												
 	@ResponseStatus(HttpStatus.OK)
-	List<Long>getAndSetScootersInMaintenance();
+	List<Long>getAndSetScootersInMaintenance(@PathVariable (name = "available") Boolean available);
 	
 	@GetMapping("/scooters/in-operation")
 	@ResponseStatus(HttpStatus.OK)
 	List<ScooterOperationDTO>getScooterInOperation();
 	
-	@PutMapping("/travels/tarifa?value={value}&date{date}")
+	@PostMapping(value= "/travels/price" , consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
-	void setNewFare(@PathVariable (name="value") double value, @PathVariable (name="date") LocalDate date );
-	//TODO Preguntar como recibir el Date, y si hay que poner algun parseo.
+	void setNewFare(@RequestBody FareDTO f );
 }

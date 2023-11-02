@@ -69,8 +69,8 @@ public class MaintenanceController implements IMaintenanceController {
     }
 
     @Override
-    public List<Long> getScootersForMaintenance() {
-        return this.maintenanceService.getScootersForMaintenance();
+    public List<Long> getScootersForMaintenance( Boolean available) {
+        return this.maintenanceService.getScootersForMaintenance(available);
     }
 
     @Override

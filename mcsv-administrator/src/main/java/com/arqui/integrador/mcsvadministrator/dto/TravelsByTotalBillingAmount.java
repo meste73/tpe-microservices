@@ -1,5 +1,7 @@
 package com.arqui.integrador.mcsvadministrator.dto;
 
+import java.math.BigDecimal;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,7 +14,7 @@ import lombok.NoArgsConstructor;
 
 public class TravelsByTotalBillingAmount {
 
-    private double total_value ;
+    private BigDecimal total_value ;
 
 
 }

@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.arqui.integrador.mcsvadministrator.dto.AdministratorDTO;
+import com.arqui.integrador.mcsvadministrator.dto.FareDTO;
 import com.arqui.integrador.mcsvadministrator.dto.FareNewPriceDTO;
 import com.arqui.integrador.mcsvadministrator.dto.ScooterForMaintenanceDTO;
 import com.arqui.integrador.mcsvadministrator.dto.ScooterOperationDTO;
@@ -94,14 +95,14 @@ public class AdministratorService implements IAdministratorService {
     public void updateStatusAccount(Long id, String status) {
 
         HttpEntity<Void> requestEntity = getRequestEntity();
-
+        
         restTemplate.exchange(
-                "http://127.0.0.1:8006/accounts/" + id + "/" + status + "",
-                HttpMethod.PATCH,
+                "127.0.0.1:8006/accounts/" + id + "/" + status,
+                HttpMethod.PUT,
                 requestEntity,
-                new ParameterizedTypeReference<List<Void>>() {
+                new ParameterizedTypeReference<Void>() {
                 });
-    }
+    }                
 
     @Override
     public List<TravelsByYearsDTO> getTravelsByYears(int year, int quantity) {
@@ -109,7 +110,7 @@ public class AdministratorService implements IAdministratorService {
         HttpEntity<Void> requestEntity = getRequestEntity();
 
         ResponseEntity<List<TravelsByYearsDTO>> result = restTemplate.exchange(
-                "http://127.0.0.1:8005//travels/filter?year=" + year + "&quantity=" + quantity,
+                "http://127.0.0.1:8005/travels/filter?year=" + year + "&quantity=" + quantity,
                 HttpMethod.GET,
                 requestEntity,
                 new ParameterizedTypeReference<List<TravelsByYearsDTO>>() {
@@ -122,25 +123,28 @@ public class AdministratorService implements IAdministratorService {
     }
 
     @Override
-    public List<TravelsByTotalBillingAmount> getTravelsByTotalBillingAmounts(int year, int month1, int month2) {
+    public TravelsByTotalBillingAmount getTravelsByTotalBillingAmounts(int year, int month1, int month2) {
 
         HttpEntity<Void> requestEntity = getRequestEntity();
 
-        ResponseEntity<List<TravelsByTotalBillingAmount>> result = restTemplate.exchange(
-                "http://0.0.0.0:8005/travels/billing?year=" + year + "&month1=" + month1 + "&month2=" + month2,
+        ResponseEntity<TravelsByTotalBillingAmount> result = restTemplate.exchange(
+                // "http://0.0.0.0:8005/travels/billing?year=" + year + "&month1=" + month1 + "&month2=" + month2,
+                "http://127.0.0.1:8005/travels/billing?year=" + year + "&month1=" + month1 + "&month2=" + month2,
+                
+
                 HttpMethod.GET,
                 requestEntity,
-                new ParameterizedTypeReference<List<TravelsByTotalBillingAmount>>() {
+                new ParameterizedTypeReference<TravelsByTotalBillingAmount>() {
                 });
         if (result.getStatusCode().is2xxSuccessful()) {
             return result.getBody();
         } else {
-            return new ArrayList<>(); // TODO : Devolver un Error
+            return null; // TODO : Devolver un Error
         }
     }
 
     @Override
-    public List<Long> getAndSetScootersInMaintenance() {
+    public List<Long> getAndSetScootersInMaintenance(Boolean available) {
 
         HttpEntity<Void> requestEntity = getRequestEntity();
 
@@ -182,20 +186,19 @@ public class AdministratorService implements IAdministratorService {
     }
 
     @Override
-    public void setNewFare(double value, LocalDate date) {
-        FareNewPriceDTO f = FareNewPriceDTO.builder().date(date).price(value).build();
+    public void setNewFare(FareDTO f) {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<FareNewPriceDTO> requestEntity = new HttpEntity<>(f, headers);
+        HttpEntity<FareDTO> requestEntity = new HttpEntity<>(f, headers);
 
          restTemplate.exchange(
-                "http://127.0.0.1:8004/Fares/", // Preguntar Endpoint, 
+                "http://127.0.0.1:8005/travels/price",
                 HttpMethod.POST, requestEntity,
                 new ParameterizedTypeReference<Void>() {
                 });
 
-        LOG.info("Updating Fare whit price: {} and Date: {}" , value , date  );
+        // LOG.info("Updating Fare whit price: {} and Date: {}" , value , date  );
                 
     }
 }

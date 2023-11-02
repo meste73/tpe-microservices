@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.arqui.integrador.mcsvadministrator.dto.AdministratorDTO;
+import com.arqui.integrador.mcsvadministrator.dto.FareDTO;
 import com.arqui.integrador.mcsvadministrator.dto.ScooterForMaintenanceDTO;
 import com.arqui.integrador.mcsvadministrator.dto.ScooterOperationDTO;
 import com.arqui.integrador.mcsvadministrator.dto.TravelsByTotalBillingAmount;
@@ -91,14 +92,14 @@ public class AdministratorController implements IAdministratorController {
     }
 
     @Override
-    public List<TravelsByTotalBillingAmount> getTravelsByTotalBillingAmounts(int year, int month1, int month2) {
+    public TravelsByTotalBillingAmount getTravelsByTotalBillingAmounts(int year, int month1, int month2) {
         
         return this.administratorService.getTravelsByTotalBillingAmounts(year,month1,month2);
     }
 
     @Override
-    public List<Long> getAndSetScootersInMaintenance() {
-        return this.administratorService.getAndSetScootersInMaintenance();
+    public List<Long> getAndSetScootersInMaintenance( Boolean available) {
+        return this.administratorService.getAndSetScootersInMaintenance( available );
     }
 
     @Override
@@ -107,8 +108,8 @@ public class AdministratorController implements IAdministratorController {
     }
 
     @Override
-    public void setNewFare(double value, LocalDate date) {
-        this.administratorService.setNewFare( value, date);
+    public void setNewFare( FareDTO f) {
+        this.administratorService.setNewFare(f);
     }
 
     

@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @Builder
 
 public class ScooterOperationDTO {
-    private boolean enabled;
-    private String value ;
-    private int quantity;
+    private Boolean enabled;
+    private Long quantity;
 }

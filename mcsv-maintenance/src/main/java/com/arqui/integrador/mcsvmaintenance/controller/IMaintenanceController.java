@@ -1,6 +1,7 @@
 package com.arqui.integrador.mcsvmaintenance.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -51,7 +52,8 @@ public interface IMaintenanceController {
 
 	@GetMapping(value = "/scooters/for-maintenance") // Arreglar con y sin pausa
 	@ResponseStatus(HttpStatus.OK)
-	List<Long> getScootersForMaintenance();
+	@ResponseBody
+	List<Long> getScootersForMaintenance(@RequestParam (value = "available") Boolean available);
 
 	@PutMapping(value = "/finalize/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)

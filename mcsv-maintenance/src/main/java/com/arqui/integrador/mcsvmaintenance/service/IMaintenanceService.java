@@ -17,7 +17,7 @@ public interface IMaintenanceService {
 		
 	void delete(Long id);
 
-    List<Long> getScootersForMaintenance();
+    List<Long> getScootersForMaintenance( Boolean available);
 
    MaintenanceDTO finalizeMaintenance(Long id);
 	
