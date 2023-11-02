@@ -7,7 +7,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -49,15 +48,13 @@ public interface IAccountController {
 	@ResponseStatus(HttpStatus.OK)
 	ResponseEntity<AccountDto> addUser(@PathVariable(name = "account-id") Long id, @Valid @RequestBody UserDto userDto);
 	
-	@PatchMapping(value = "/{account-id}/authorize")
-	@ResponseBody
+	@PutMapping(value = "/{account-id}/authorize")
 	@ResponseStatus(HttpStatus.OK)
-	ResponseEntity<AccountDto> authorizeAccount(@PathVariable(name = "account-id") Long id);
+	void authorizeAccount(@PathVariable(name = "account-id") Long id);
 	
-	@PatchMapping(value = "/{account-id}/unauthorize")
-	@ResponseBody
+	@PutMapping(value = "/{account-id}/unauthorize")
 	@ResponseStatus(HttpStatus.OK)
-	ResponseEntity<AccountDto> unauthorizeAccount(@PathVariable(name = "account-id") Long id);
+	void unauthorizeAccount(@PathVariable(name = "account-id") Long id);
 	
 	@DeleteMapping(value = "/account/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)

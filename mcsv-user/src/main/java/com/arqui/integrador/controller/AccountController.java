@@ -72,21 +72,17 @@ public class AccountController implements IAccountController{
 	}
 	
 	@Override
-	public ResponseEntity<AccountDto> authorizeAccount(Long id){
+	public void authorizeAccount(Long id){
 		AccountDto response = this.accountService.authorize(id);
 		
 		LOG.info("Authorizing account: {}", response);
-		
-		return ResponseEntity.ok(response);
-	}
+		}
 	
 	@Override
-	public ResponseEntity<AccountDto> unauthorizeAccount(Long id){
+	public void unauthorizeAccount(Long id){
 		AccountDto response = this.accountService.unauthorize(id);
 		
-		LOG.info("Unauthorizing account: {}", response);
-		
-		return ResponseEntity.ok(response);
+		LOG.info("Unauthorizing account: {}", response);		
 	}
 
 	@Override

@@ -64,8 +64,7 @@ public class UserService implements IUserService{
 		HttpEntity<List<Void>> requestEntity = new HttpEntity<>(headers);
 		
 		ResponseEntity<List<ScooterDto>> response = restTemplate.exchange(
-				//"http://10.13.29.141:8004/scooters/nearest/lat/" + latitude + "/long/" + longitude,
-				"http://127.0.0.1:8004/scooters/nearest/lat/" + latitude + "/long/" + longitude,
+				"http://192.168.0.20:8004/scooters/nearest/lat/" + latitude + "/long/" + longitude,
 				HttpMethod.GET,
 				requestEntity, 
 				new ParameterizedTypeReference<List<ScooterDto>>() {}

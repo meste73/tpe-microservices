@@ -4,35 +4,43 @@ import java.time.LocalDate;
 
 import org.springframework.stereotype.Component;
 
-import com.arqui.integrador.dto.AccountDto;
-import com.arqui.integrador.service.IAccountService;
+import com.arqui.integrador.model.Account;
+import com.arqui.integrador.repository.IAccountRepository;
+
+import jakarta.annotation.PostConstruct;
+
 
 @Component
 public class AccountInitializer {
 	
-    private IAccountService accountService;
+    private IAccountRepository accountRepository;
+    private UserInitializer userInit;
     
-    public AccountInitializer(IAccountService accountService) {
-    	this.accountService = accountService;
+    public AccountInitializer(IAccountRepository accountRepository, UserInitializer userInit) {
+    	this.accountRepository = accountRepository;
+    	this.userInit = userInit;
     }
-
+    
+    @PostConstruct
     public void init(){
-    	this.accountService.create(AccountDto.builder().amount(12500)
+    	this.accountRepository.save(Account.builder().amount(12500)
     			.dateOfSign(LocalDate.of(2023,7,10)).mpAccount(10012456).isAvailable(true).build());
     	
-    	this.accountService.create(AccountDto.builder().amount(14700)
+    	this.accountRepository.save(Account.builder().amount(14700)
     			.dateOfSign(LocalDate.of(2023,4,22)).mpAccount(10013578).isAvailable(true).build());
     	
-    	this.accountService.create(AccountDto.builder().amount(13200)
+    	this.accountRepository.save(Account.builder().amount(13200)
     			.dateOfSign(LocalDate.of(2023,3,14)).mpAccount(10014101).isAvailable(true).build());
     	
-    	this.accountService.create(AccountDto.builder().amount(16000)
+    	this.accountRepository.save(Account.builder().amount(16000)
     			.dateOfSign(LocalDate.of(2023,8,7)).mpAccount(10017594).isAvailable(true).build());
     	
-    	this.accountService.create(AccountDto.builder().amount(18000)
+    	this.accountRepository.save(Account.builder().amount(18000)
     			.dateOfSign(LocalDate.of(2023,2,1)).mpAccount(10013365).isAvailable(true).build());
     	
-    	this.accountService.create(AccountDto.builder().amount(9100)
+    	this.accountRepository.save(Account.builder().amount(9100)
     			.dateOfSign(LocalDate.of(2023,9,28)).mpAccount(10013142).isAvailable(true).build());
+    	
+    	this.userInit.init();
     }
 }
