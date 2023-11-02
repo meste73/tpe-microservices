@@ -1,0 +1,8 @@
+com\arqui\integrador\model\Travel$TravelBuilder.class
+com\arqui\integrador\McsvTravelApplication.class
+com\arqui\integrador\controller\TravelController.class
+com\arqui\integrador\dto\TravelDto.class
+com\arqui\integrador\model\Travel.class
+com\arqui\integrador\repository\TravelRepository.class
+com\arqui\integrador\service\ITravelService.class
+com\arqui\integrador\service\TravelService.class
