@@ -22,7 +22,7 @@ public class UserController implements IUserController{
 	public UserController(IUserService userService) {
 		this.userService = userService;
 	}
-
+	
 	@Override
 	public ResponseEntity<List<UserDto>> getAll() {
 		List<UserDto> response = this.userService.getAll();
@@ -42,8 +42,8 @@ public class UserController implements IUserController{
 	}
 	
 	@Override
-	public ResponseEntity<List<ScooterDto>> getNearScooters(){
-		List<ScooterDto> response = this.userService.getNearScooters();
+	public ResponseEntity<List<ScooterDto>> getNearestScooters(double latitude, double longitude){
+		List<ScooterDto> response = this.userService.getNearScooters(latitude, longitude);
 		
 		LOG.info("Getting near scooters: {}", response);
 		

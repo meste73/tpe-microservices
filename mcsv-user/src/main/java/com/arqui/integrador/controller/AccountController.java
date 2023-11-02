@@ -64,26 +64,25 @@ public class AccountController implements IAccountController{
 	
 	@Override
 	public ResponseEntity<AccountDto> addUser(@PathVariable(name = "account-id") Long id, @Valid @RequestBody UserDto userDto){
-		//TODO implements addUser()
-		return null;
+		AccountDto response = this.accountService.addUser(id, userDto);
+		
+		LOG.info("Adding user: {} into account: {}", userDto, response);
+		
+		return ResponseEntity.ok(response);
 	}
 	
 	@Override
-	public ResponseEntity<AccountDto> authorizeAccount(Long id){
+	public void authorizeAccount(Long id){
 		AccountDto response = this.accountService.authorize(id);
 		
 		LOG.info("Authorizing account: {}", response);
-		
-		return ResponseEntity.ok(response);
-	}
+		}
 	
 	@Override
-	public ResponseEntity<AccountDto> unauthorizeAccount(Long id){
+	public void unauthorizeAccount(Long id){
 		AccountDto response = this.accountService.unauthorize(id);
 		
-		LOG.info("Unauthorizing account: {}", response);
-		
-		return ResponseEntity.ok(response);
+		LOG.info("Unauthorizing account: {}", response);		
 	}
 
 	@Override
@@ -94,8 +93,9 @@ public class AccountController implements IAccountController{
 	}
 	
 	@Override
-	public void deleteUser(Long id, UserDto userDto) {
-		//TODO implements deleteUser()
+	public void deleteUser(Long accountId, Long userId) {
+		this.accountService.deleteUser(accountId, userId);
+		
+		LOG.info("Deleting userId: {} from accountId: {}", userId, accountId);
 	}
-
 }

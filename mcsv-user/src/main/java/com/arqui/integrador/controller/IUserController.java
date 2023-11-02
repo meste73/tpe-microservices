@@ -31,36 +31,36 @@ public interface IUserController {
 	@ResponseStatus(HttpStatus.OK)
 	ResponseEntity<List<UserDto>> getAll();
 	
-	@GetMapping(value = "/user/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@ResponseStatus(HttpStatus.OK)
 	ResponseEntity<UserDto> getById(@PathVariable(name = "id") Long id);
 	
-	@GetMapping(value = "near-scooters", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "nearest-scooters/lat/{lat}/long/{long}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@ResponseStatus(HttpStatus.OK)
-	ResponseEntity<List<ScooterDto>> getNearScooters();
+	ResponseEntity<List<ScooterDto>> getNearestScooters(@PathVariable(name = "lat") double latitude, @PathVariable(name = "long") double longitude);
 	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@ResponseStatus(HttpStatus.CREATED)
 	ResponseEntity<UserDto> create(@Valid @RequestBody UserDto user);
 	
-	@PutMapping(value = "/user/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@ResponseStatus(HttpStatus.OK)
 	ResponseEntity<UserDto> update(@PathVariable(name = "id") Long id, @Valid @RequestBody UserDto user);
 	
-	@PutMapping(value = "/user/{user-id}/add-account", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping(value = "/{user-id}/account", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@ResponseStatus(HttpStatus.OK)
 	ResponseEntity<UserDto> addAccount(@PathVariable(name = "user-id") Long userId, @Valid @RequestBody AccountDto account);
 	
-	@DeleteMapping(value = "/user/{id}")
+	@DeleteMapping(value = "/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	void delete(@PathVariable(name = "id") Long id);
 	
-	@DeleteMapping(value = "/user/{user-id}/delete-account/{account-id}")
+	@DeleteMapping(value = "/{user-id}/account/{account-id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	void deleteAccount(@PathVariable(name = "user-id") Long userId, @PathVariable(name = "account-id") Long accountId);
 }

@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -42,8 +43,18 @@ public class Account {
 	@Column(name = "is_available", nullable = false)
 	private boolean isAvailable;
 	
-	@ManyToMany(mappedBy = "accounts")
+	@ManyToMany(mappedBy = "accounts", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
 	private List<User> users;
+	
+	public boolean addUser(User user) {
+		if(users.contains(user))
+			return false;
+		return this.users.add(user);
+	}
+	
+	public boolean deleteUser(User user) {
+		return this.users.remove(user);
+	}
 
 	@Override
 	public String toString() {

@@ -23,5 +23,5 @@ public interface IAccountService {
 	
 	void delete(Long id);
 	
-	void deleteUser(Long id, UserDto userDto);
+	void deleteUser(Long accountId, Long userId);
 }

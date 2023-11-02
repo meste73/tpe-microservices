@@ -4,6 +4,7 @@ import static com.arqui.integrador.util.AccountMapper.dtoToEntity;
 import static com.arqui.integrador.util.AccountMapper.entityToDto;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,19 +12,25 @@ import org.springframework.stereotype.Service;
 
 import com.arqui.integrador.dto.AccountDto;
 import com.arqui.integrador.dto.UserDto;
+import com.arqui.integrador.exception.AccountHasUserException;
 import com.arqui.integrador.exception.AccountStateException;
 import com.arqui.integrador.exception.ItemNotFoundException;
 import com.arqui.integrador.model.Account;
+import com.arqui.integrador.model.User;
 import com.arqui.integrador.repository.IAccountRepository;
+import com.arqui.integrador.repository.IUserRepository;
+import com.arqui.integrador.util.UserMapper;
 
 @Service
 public class AccountService implements IAccountService{
 	
 	private IAccountRepository accountRepository;
+	private IUserRepository userRepository;
 	private static final Logger LOG = LoggerFactory.getLogger(AccountService.class);
 	
-	public AccountService(IAccountRepository accountRepository) {
+	public AccountService(IAccountRepository accountRepository, IUserRepository userRepository) {
 		this.accountRepository = accountRepository;
+		this.userRepository = userRepository;
 	}
 
 	@Override
@@ -68,8 +75,27 @@ public class AccountService implements IAccountService{
 	
 	@Override
 	public AccountDto addUser(Long id, UserDto userDto) {
-		//Implements addUser()
-		return null;
+		Account account = this.findById(id);
+		
+		Optional<User> userOpt = this.userRepository.findByEmail(userDto.getEmail());
+		
+		User user;
+		
+		if(userOpt.isPresent()) {
+			user = userOpt.get();
+		} else {
+			user = UserMapper.dtoToEntity(userDto);
+		}
+		
+		if(!account.addUser(user)) {
+			throw new AccountHasUserException("Bad request", "Account already has the user.");
+		}
+		
+		this.accountRepository.save(account);
+		
+		LOG.info("Adding user: {} into Account: {}", user, account);
+		
+		return entityToDto(account);
 	}
 	
 	@Override
@@ -115,13 +141,25 @@ public class AccountService implements IAccountService{
 	}
 	
 	@Override
-	public void deleteUser(Long id, UserDto userDto) {
-		//Implements deleteUser()
+	public void deleteUser(Long accountId, Long userId) {
+		Account account = this.findById(accountId);
+		
+		User user = this.findUserById(userId);
+		
+		account.deleteUser(user);
+		
+		this.accountRepository.save(account);
+		
+		LOG.info("User: {}, deleted from Account: {}", user, account);
 	}
 	
 	private Account findById(Long id) {
 		return this.accountRepository.findById(id).orElseThrow(() -> 
 			new ItemNotFoundException("Item not found", "Account with id: " + id + " not found."));
 	}
-
+	
+	private User findUserById(Long id) {
+		return this.userRepository.findById(id).orElseThrow(() ->
+			new ItemNotFoundException("Item not found", "User with id: " + id + " not found."));
+	}
 }

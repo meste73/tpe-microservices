@@ -7,7 +7,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -29,7 +28,7 @@ public interface IAccountController {
 	@ResponseStatus(HttpStatus.OK)
 	ResponseEntity<List<AccountDto>> getAll();
 	
-	@GetMapping(value = "/account/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@ResponseStatus(HttpStatus.OK)
 	ResponseEntity<AccountDto> getById(@PathVariable(name = "id")Long id);
@@ -39,32 +38,29 @@ public interface IAccountController {
 	@ResponseStatus(HttpStatus.CREATED)
 	ResponseEntity<AccountDto> create(@Valid @RequestBody AccountDto accountDto);
 	
-	@PutMapping(value = "/account/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@ResponseStatus(HttpStatus.OK)
 	ResponseEntity<AccountDto> update(@PathVariable(name = "id") Long id, @Valid @RequestBody AccountDto accountDto);
 	
-	@PutMapping(value = "/account/{account-id}/add-user", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping(value = "/{account-id}/user", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@ResponseStatus(HttpStatus.OK)
 	ResponseEntity<AccountDto> addUser(@PathVariable(name = "account-id") Long id, @Valid @RequestBody UserDto userDto);
 	
-	@PatchMapping(value = "/account/{account-id}/authorize")
-	@ResponseBody
+	@PutMapping(value = "/{account-id}/authorize")
 	@ResponseStatus(HttpStatus.OK)
-	ResponseEntity<AccountDto> authorizeAccount(@PathVariable(name = "account-id") Long id);
+	void authorizeAccount(@PathVariable(name = "account-id") Long id);
 	
-	@PatchMapping(value = "/account/{account-id}/unauthorize")
-	@ResponseBody
+	@PutMapping(value = "/{account-id}/unauthorize")
 	@ResponseStatus(HttpStatus.OK)
-	ResponseEntity<AccountDto> unauthorizeAccount(@PathVariable(name = "account-id") Long id);
+	void unauthorizeAccount(@PathVariable(name = "account-id") Long id);
 	
 	@DeleteMapping(value = "/account/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	void delete(@PathVariable(name = "id") Long id);
 	
-	@DeleteMapping(value = "/account/{account-id}/delete-user")
+	@DeleteMapping(value = "/{account-id}/user/{user-id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	void deleteUser(@PathVariable(name = "account-id") Long id, @Valid @RequestBody UserDto userDto);
-	
+	void deleteUser(@PathVariable(name = "account-id") Long accountId, @PathVariable(name = "user-id")  Long userId);
 }
