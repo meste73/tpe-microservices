@@ -24,15 +24,15 @@ public class TravelDto implements Serializable {
 
 	@JsonProperty("id")
 	private int id;
-	@JsonProperty("id_account")
+	@JsonProperty("idAccount")
 	private int id_cuenta;
-	@JsonProperty("id_user")
+	@JsonProperty("idUser")
 	private int id_usuario;
-	@JsonProperty("id_scooter")
+	@JsonProperty("idScooter")
 	private int id_scooter;
-	@JsonProperty("start_date")
+	@JsonProperty("startDate")
 	private Timestamp start_date;
-	@JsonProperty("ending_date")
+	@JsonProperty("endingDate")
 	private Timestamp ending_date;
 	@JsonProperty("km")
 	private BigDecimal km;
@@ -40,6 +40,6 @@ public class TravelDto implements Serializable {
 	private BigDecimal cost;
 	@JsonProperty("paused")
 	private boolean paused;
-	@JsonProperty("pause_time")
+	@JsonProperty("pauseTime")
 	private int pause_time;
 }
