@@ -21,7 +21,7 @@ public class AccountInitializer {
     	this.userInit = userInit;
     }
     
-    @PostConstruct
+    //@PostConstruct
     public void init(){
     	this.accountRepository.save(Account.builder().amount(12500)
     			.dateOfSign(LocalDate.of(2023,7,10)).mpAccount(10012456).isAvailable(true).build());

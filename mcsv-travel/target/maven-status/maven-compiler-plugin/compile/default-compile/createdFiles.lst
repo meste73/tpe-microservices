@@ -1,8 +1,13 @@
 com\arqui\integrador\model\Travel$TravelBuilder.class
+com\arqui\integrador\model\Price$PriceBuilder.class
+com\arqui\integrador\model\Price.class
+com\arqui\integrador\dto\BillDto.class
+com\arqui\integrador\dto\PausedTimeResponseDto.class
+com\arqui\integrador\dto\TravelsScooterResponseDto.class
 com\arqui\integrador\McsvTravelApplication.class
 com\arqui\integrador\controller\TravelController.class
 com\arqui\integrador\dto\TravelDto.class
 com\arqui\integrador\model\Travel.class
 com\arqui\integrador\repository\TravelRepository.class
-com\arqui\integrador\service\ITravelService.class
+com\arqui\integrador\dto\PriceDto.class
 com\arqui\integrador\service\TravelService.class
