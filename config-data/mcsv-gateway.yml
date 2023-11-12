@@ -17,26 +17,26 @@ spring:
    routes:
     - id: mcsv-administrator
       uri: lb://mcsv-administrator
-      predicated:
+      predicates:
        - Path=/administrator/**
     - id: mcsv-maintenance
       uri: lb://mcsv-maintenance
-      predicated:
+      predicates:
        - Path=/maintenance/**
     - id: mcsv-scooter
       uri: lb://mcsv-scooter
-      predicated:
+      predicates:
        - Path=/scooters/**
     - id: mcsv-station
       uri: lb://mcsv-station
-      predicated:
+      predicates:
        - Path=/stations/**
     - id: mcsv-travel
       uri: lb://mcsv-travel
-      predicated:
+      predicates:
        - Path=/travels/**
     - id: mcsv-user
       uri: lb://mcsv-user
-      predicated:
+      predicates:
        - Path=/users/**
          Path=/accounts/**
