@@ -1,13 +1,13 @@
 spring:
  datasource:
-  url: jdbc:mysql://localhost:3306/arqui_tpe_maintenance
+  url: jdbc:mysql://localhost:3306/Arquitectura
   username: root
   password: admin
  jpa:
   hibernate:
    ddl-auto: update
  application:
-  name: mcsv-maintenance
+  name: mcsv-scooter
  cloud:
   config:
    enabled: true
