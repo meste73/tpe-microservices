@@ -16,9 +16,9 @@ import jakarta.annotation.PostConstruct;
 
 @Component
 public class JwtTokenManager {
-
+	
 	private static final int TOKEN_VALIDITY = 3600000;
-
+	
 	@Value("${jwt.secret}")
 	private String secret;
 
@@ -51,9 +51,9 @@ public class JwtTokenManager {
 
 		return claims.getSubject();
 	}
-
+	
 	@PostConstruct
-	protected void init() {
+	private void hashSecretWord() {
 		this.secret = Base64.getEncoder().encodeToString(this.secret.getBytes());
 	}
 }

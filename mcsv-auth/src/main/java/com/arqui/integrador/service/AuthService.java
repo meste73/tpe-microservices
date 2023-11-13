@@ -2,8 +2,6 @@ package com.arqui.integrador.service;
 
 import java.util.ArrayList;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -17,8 +15,6 @@ import com.arqui.integrador.repository.IAuthRepository;
 
 @Service
 public class AuthService implements UserDetailsService{
-	
-	private static final Logger LOG = LoggerFactory.getLogger(AuthService.class);
 	
 	private IAuthRepository authRepository;
 	
@@ -44,7 +40,6 @@ public class AuthService implements UserDetailsService{
 				.username(user.getUsername())
 				.password(bCryptedPassword)
 				.build());
-		LOG.info("User registered: {}", user.getUsername());
 	}
 	
 	private String encodePassword(String password) {

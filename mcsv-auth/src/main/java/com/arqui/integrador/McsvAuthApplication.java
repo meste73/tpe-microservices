@@ -9,5 +9,4 @@ public class McsvAuthApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(McsvAuthApplication.class, args);
 	}
-
 }
