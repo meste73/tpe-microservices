@@ -48,5 +48,3 @@ spring:
       uri: lb://mcsv-auth
       predicates:
        - Path=/auth/**
-      filters:
-       - JwtFilter
