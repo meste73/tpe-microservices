@@ -54,7 +54,7 @@ public class TravelService {
 		Travel t1 = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado"));
 		t1 = mapper.convertValue(t, Travel.class);
 		t1.setCost(t.getCost());
-		t1.setEndingDate(t.getEnding_date());
+		t1.setEnding_date(t.getEnding_date());
 		t1.setKm(t.getKm());
 
 		repository.save(t1);

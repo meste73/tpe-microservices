@@ -33,19 +33,19 @@ public class Travel implements Serializable{
 	@Column(name="id")
 	private Long id;
 	@Column(name="id_account")
-	private int idAccount;
+	private int id_account;
 	@Column(name="id_user")
-	private int idUser;
+	private int id_user;
 	@Column(name="id_scooter")
-	private int idScooter;
+	private int id_scooter;
 	@Column(name="start_date", nullable = false, updatable = false)
 	@CreationTimestamp
-	private Timestamp startDate;
+	private Timestamp start_date;
 	@CreationTimestamp
 	@Column(name="ending_date")
-	private Timestamp endingDate;
+	private Timestamp ending_date;
 	@Column(name="pause_time")
-	private int pauseTime;
+	private int pause_time;
 	@Column(name="km")
 	private BigDecimal km;
 	@Column(name="cost")
