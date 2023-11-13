@@ -44,3 +44,7 @@ spring:
       uri: lb://mcsv-user
       predicates:
        - Path=/accounts/**
+    - id: mcsv-auth
+      uri: lb://mcsv-auth
+      predicates:
+       - Path=/auth/**
