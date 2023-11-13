@@ -5,15 +5,11 @@ import java.util.List;
 
 import javax.persistence.EntityNotFoundException;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.arqui.integrador.dto.BillDto;
-import com.arqui.integrador.dto.PausedTimeResponseDto;
-import com.arqui.integrador.dto.PriceDto;
 import com.arqui.integrador.dto.TravelDto;
-import com.arqui.integrador.dto.TravelsScooterResponseDto;
-import com.arqui.integrador.model.Price;
 import com.arqui.integrador.model.Travel;
 import com.arqui.integrador.repository.TravelRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -22,11 +18,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class TravelService {
 
 	private TravelRepository repository;
+	
 	private ObjectMapper mapper;
-
-	public TravelService(TravelRepository repository) {
+	
+	public TravelService(TravelRepository repository, @Qualifier("mapper")ObjectMapper mapper) {
 		this.repository = repository;
-		this.mapper = new ObjectMapper();
+		this.mapper = mapper;
 	}
 
 	public TravelDto getById(Long id) {
@@ -64,20 +61,20 @@ public class TravelService {
 		repository.deleteById(id);
 	}
 
-	public List<PausedTimeResponseDto> getAllByPause() {
-		return repository.getAllByPause();
-	}
-
-	public List<TravelsScooterResponseDto> getAllByYearQuantity(int year, Long quantity) {
-		return repository.getQuantityByYear(year, quantity);
-	}
-
-	public BillDto getBills(int year, int month1, int month2) {
-		return repository.getBillsByDate(year, month1, month2);
-	}
-	
-	public void newPrice(PriceDto p) {
-		Price p1 = mapper.convertValue(p, Price.class);
-		repository.save(p1);
-	}
+//	public List<PausedTimeResponseDto> getAllByPause() {
+//		return repository.getAllByPause();
+//	}
+//
+//	public List<TravelsScooterResponseDto> getAllByYearQuantity(int year, Long quantity) {
+//		return repository.getQuantityByYear(year, quantity);
+//	}
+//
+//	public BillDto getBills(int year, int month1, int month2) {
+//		return repository.getBillsByDate(year, month1, month2);
+//	}
+//	
+//	public void newPrice(PriceDto p) {
+//		Price p1 = mapper.convertValue(p, Price.class);
+//		repository.save(p1);
+//	}
 }

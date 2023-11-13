@@ -69,40 +69,40 @@ public class TravelController {
 		service.delete(id1);
 	}
 
-	@GetMapping(value = "/paused")
-	public ResponseEntity<List<PausedTimeResponseDto>> getTravelsByPausedTime() {
-		List<PausedTimeResponseDto> travel = service.getAllByPause();
-		if (travel != null) {
-			return ResponseEntity.ok(travel);
-		} else {
-			return ResponseEntity.notFound().build();
-		}
-	}
-
-	@GetMapping(value = "/filter")
-	public ResponseEntity<List<TravelsScooterResponseDto>> getQuantityTravelsByYear(@RequestParam int year,
-			@RequestParam Long quantity) {
-		List<TravelsScooterResponseDto> travel = service.getAllByYearQuantity(year, quantity);
-		if (travel != null) {
-			return ResponseEntity.ok(travel);
-		} else {
-			return ResponseEntity.notFound().build();
-		}
-	}
-
-	@GetMapping(value = "/billing")
-	public ResponseEntity<BillDto> getBillingByDate(@RequestParam int year, @RequestParam int month1,
-			@RequestParam int month2) {
-		BillDto travel = service.getBills(year, month1, month2);
-		if (travel != null) {
-			return ResponseEntity.ok(travel);
-		} else {
-			return ResponseEntity.notFound().build();
-		}
-	}
-	
-	@PostMapping(value = "/price", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public void createNewPrice(@RequestBody PriceDto p) {
-		service.newPrice(p);
-	}
+//	@GetMapping(value = "/paused")
+//	public ResponseEntity<List<PausedTimeResponseDto>> getTravelsByPausedTime() {
+//		List<PausedTimeResponseDto> travel = service.getAllByPause();
+//		if (travel != null) {
+//			return ResponseEntity.ok(travel);
+//		} else {
+//			return ResponseEntity.notFound().build();
+//		}
+//	}
+//
+//	@GetMapping(value = "/filter")
+//	public ResponseEntity<List<TravelsScooterResponseDto>> getQuantityTravelsByYear(@RequestParam int year,
+//			@RequestParam Long quantity) {
+//		List<TravelsScooterResponseDto> travel = service.getAllByYearQuantity(year, quantity);
+//		if (travel != null) {
+//			return ResponseEntity.ok(travel);
+//		} else {
+//			return ResponseEntity.notFound().build();
+//		}
+//	}
+//
+//	@GetMapping(value = "/billing")
+//	public ResponseEntity<BillDto> getBillingByDate(@RequestParam int year, @RequestParam int month1,
+//			@RequestParam int month2) {
+//		BillDto travel = service.getBills(year, month1, month2);
+//		if (travel != null) {
+//			return ResponseEntity.ok(travel);
+//		} else {
+//			return ResponseEntity.notFound().build();
+//		}
+//	}
+//	
+//	@PostMapping(value = "/price", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+//	public void createNewPrice(@RequestBody PriceDto p) {
+//		service.newPrice(p);
+//	}
 }

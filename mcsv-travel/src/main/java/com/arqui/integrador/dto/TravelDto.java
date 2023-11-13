@@ -2,7 +2,7 @@ package com.arqui.integrador.dto;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
@@ -31,9 +31,9 @@ public class TravelDto implements Serializable {
 	@JsonProperty("id_scooter")
 	private int id_scooter;
 	@JsonProperty("start_date")
-	private Timestamp start_date;
+	private LocalDateTime start_date;
 	@JsonProperty("ending_date")
-	private Timestamp ending_date;
+	private LocalDateTime ending_date;
 	@JsonProperty("km")
 	private BigDecimal km;
 	@JsonProperty("cost")
