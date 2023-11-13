@@ -16,12 +16,12 @@ import jakarta.annotation.PostConstruct;
 
 @Component
 public class JwtTokenManager {
-	
+
 	private static final int TOKEN_VALIDITY = 3600000;
-	
+
 	@Value("${jwt.secret}")
 	private String secret;
-	
+
 	public String generateJwtToken(UserDetails userDetails) {
 		Map<String, Object> claims = new HashMap<>();
 
@@ -32,26 +32,26 @@ public class JwtTokenManager {
 				.setExpiration(new Date(System.currentTimeMillis() + TOKEN_VALIDITY))
 				.signWith(SignatureAlgorithm.HS512, this.secret).compact();
 	}
-	
+
 	public boolean validateJwtToken(String token, UserDetails userDetails) {
 		String username = getUsernameFromToken(token);
-		
+
 		Claims claims = Jwts.parser()
 				.setSigningKey(this.secret)
 				.parseClaimsJws(token)
 				.getBody();
-		
+
 		boolean isTokenExpired = claims.getExpiration().before(new Date());
 
 		return (username.equals(userDetails.getUsername()) && !isTokenExpired);
 	}
-	
+
 	public String getUsernameFromToken(String token) {
 		final Claims claims = Jwts.parser().setSigningKey(this.secret).parseClaimsJws(token).getBody();
 
 		return claims.getSubject();
 	}
-	
+
 	@PostConstruct
 	protected void init() {
 		this.secret = Base64.getEncoder().encodeToString(this.secret.getBytes());

@@ -28,17 +28,17 @@ public class WebSecurityConfig {
 
 	@Autowired
 	private JwtFilter filter;
-    
+
     @Bean
     public PasswordEncoder passwordEncoder() {
     	return new BCryptPasswordEncoder();
     }
-    
+
 	@Bean
 	public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfiguration) throws Exception {
 		return authConfiguration.getAuthenticationManager();
 	}
-	
+
 	@Bean
 	public DaoAuthenticationProvider authenticationProvider() {
 		DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
@@ -48,7 +48,7 @@ public class WebSecurityConfig {
 
 		return authProvider;
 	}
-	
+
 	@Bean
 	public CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration configuration = new CorsConfiguration();
@@ -58,15 +58,16 @@ public class WebSecurityConfig {
 		source.registerCorsConfiguration("/**", configuration);
 		return source;
 	}
-	
+
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		
+
 		http.authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
-	                        .requestMatchers("/test/**").permitAll()
+	                        /*.requestMatchers("/**").hasRole("USER")*/
 	                        .requestMatchers("/auth/**").permitAll()
-	                        .requestMatchers("/auth/register/").authenticated());
-		
+	                        .requestMatchers("/test/**").permitAll()
+	                        .anyRequest().authenticated());
+
 		http.authenticationProvider(authenticationProvider());
 
 		http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
