@@ -1,54 +1,56 @@
 package com.arqui.integrador.filter;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 
-import com.arqui.integrador.security.JwtUtil;
-import com.arqui.integrador.security.RouteValidator;
 import com.google.common.net.HttpHeaders;
 
 @Component
 public class AuthenticationFilter extends AbstractGatewayFilterFactory<AuthenticationFilter.Config>{
 	
-	@Autowired
-	private RestTemplate restTemplate;
+	private static final Logger LOG = LoggerFactory.getLogger(AuthenticationFilter.class);
 	
-	@Autowired
-	private RouteValidator routeValidator;
+	private WebClient.Builder webClientBuilder;
 	
-	@Autowired
-	private JwtUtil jwtUtil;
-	
-	public AuthenticationFilter() {
+	public AuthenticationFilter(WebClient.Builder webClientBuilder) {
 		super(Config.class);
+		this.webClientBuilder = webClientBuilder;
 	}
 
 	@Override
 	public GatewayFilter apply(Config config) {
+		LOG.info("gateway filter");
 		return ((exchange, chain)->{
-			if(routeValidator.isSecured.test(exchange.getRequest())) {
-				if(!exchange.getRequest().getHeaders().containsKey(HttpHeaders.AUTHORIZATION)) {
-					throw new RuntimeException("Missin auth header");
-				}
+			LOG.info("inside return");
+			if(!exchange.getRequest().getHeaders().containsKey(HttpHeaders.AUTHORIZATION)) {
+				throw new RuntimeException("Missin auth header");
 			}
 			
-			String authHeaders = exchange.getRequest().getHeaders().get(HttpHeaders.AUTHORIZATION).get(0);
-			if(authHeaders != null && authHeaders.startsWith("Bearer ")) {
-				authHeaders=authHeaders.substring(7);
+			String authHeader = exchange.getRequest().getHeaders().get(HttpHeaders.AUTHORIZATION).get(0);
+			
+			String[] parts = authHeader.split(" ");
+			
+			if(parts.length != 2 || !parts[0].equals("Bearer")) {
+				throw new RuntimeException("Incorrect auth structure");
 			}
 			
-			try {
-				//restTemplate.getForObject("http://localhost:8080/auth/validate?token"+authHeaders, String.class);
-				jwtUtil.validateJwtToken(authHeaders);
-			}catch(Exception e) {
-				throw new RuntimeException("unauthorized access to application, rest template");
-			}
-			return chain.filter(exchange);
+			return webClientBuilder.build()
+					.post()
+					.uri("http://localhost:8080/auth/validate?token=" + parts[1])
+					.retrieve().bodyToMono(String.class).map( string ->{
+						exchange.getRequest()
+						.mutate()
+						.header("", parts);
+						return exchange;
+					}).flatMap(chain::filter);
+
 		});
 	}
+
 	
 	public static class Config {
 		

@@ -40,12 +40,16 @@ spring:
       uri: lb://mcsv-user
       predicates:
        - Path=/users/**
+      filters:
+       - AuthFilter
+
     - id: mcsv-user
       uri: lb://mcsv-user
       predicates:
        - Path=/accounts/**
       filters:
-       - AuthenticationFilter
+       - AuthFilter
+
     - id: mcsv-auth
       uri: lb://mcsv-auth
       predicates:
