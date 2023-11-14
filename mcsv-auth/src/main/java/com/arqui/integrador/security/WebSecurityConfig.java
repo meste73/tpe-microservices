@@ -72,8 +72,8 @@ public class WebSecurityConfig {
 		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 		.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint).and()
 		.authorizeHttpRequests( req -> {
-			req.requestMatchers("/auth/login").permitAll()
-			.requestMatchers("/auth/register").authenticated()
+			req.requestMatchers("/auth/register").authenticated()
+			.requestMatchers("/auth/**").permitAll()
 			.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll().anyRequest().authenticated();
 		});
 

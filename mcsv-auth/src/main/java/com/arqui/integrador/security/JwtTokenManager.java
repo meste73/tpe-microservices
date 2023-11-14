@@ -1,6 +1,5 @@
 package com.arqui.integrador.security;
 
-import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Component;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import jakarta.annotation.PostConstruct;
 
 @Component
 public class JwtTokenManager {
@@ -50,10 +48,5 @@ public class JwtTokenManager {
 		final Claims claims = Jwts.parser().setSigningKey(this.secret).parseClaimsJws(token).getBody();
 
 		return claims.getSubject();
-	}
-	
-	@PostConstruct
-	private void hashSecretWord() {
-		this.secret = Base64.getEncoder().encodeToString(this.secret.getBytes());
 	}
 }

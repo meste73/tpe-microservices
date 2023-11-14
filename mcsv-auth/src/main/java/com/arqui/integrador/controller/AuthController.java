@@ -63,4 +63,17 @@ public class AuthController implements IAuthController{
 		
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
+	
+	@Override
+	public ResponseEntity<TokenDto> validate(String token){
+		
+		String username = this.jwtTokenManager.getUsernameFromToken(token);
+		UserDetails userDetails = this.authService.loadUserByUsername(username);
+		
+		if(this.jwtTokenManager.validateJwtToken(token, userDetails)) {
+			return ResponseEntity.ok(TokenDto.builder().token(token).build());
+		} else {
+			throw new RuntimeException("Invalid token");
+		}
+	}
 }

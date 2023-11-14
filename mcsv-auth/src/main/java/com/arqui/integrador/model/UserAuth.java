@@ -28,4 +28,6 @@ public class UserAuth {
 	
 	@Column(unique = true)
 	private String password;
+	
+	private String role;
 }
