@@ -3,7 +3,6 @@ package com.arqui.integrador.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -13,6 +12,8 @@ import com.arqui.integrador.dto.TravelDto;
 import com.arqui.integrador.model.Travel;
 import com.arqui.integrador.repository.TravelRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class TravelService {

@@ -13,26 +13,28 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Document(collection = "Travel")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Travel implements Serializable {
+@ToString
+	public class Travel implements Serializable {
 
-	private static final long serialVersionUID = -1680823192265785318L;
-	@Id
-	private Long id;
-	private int id_account;
-	private int id_user;
-	private int id_scooter;
-	@CreatedDate
-	private LocalDateTime start_date;
-	@LastModifiedDate
-	private LocalDateTime ending_date;
-	private int pause_time;
-	private BigDecimal km;
-	private BigDecimal cost;
-	private boolean paused;
-}
+		private static final long serialVersionUID = -1680823192265785318L;
+		@Id
+		private String id; // segun chatGPT, esto debe ser String
+		private int id_account;
+		private int id_user;
+		private int id_scooter;
+		@CreatedDate
+		private LocalDateTime start_date;
+		@LastModifiedDate
+		private LocalDateTime ending_date;
+		private int pause_time;
+		private BigDecimal km;
+		private BigDecimal cost;
+		private boolean paused;
+	}

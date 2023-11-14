@@ -23,7 +23,7 @@ public class TravelDto implements Serializable {
 	private static final long serialVersionUID = 5534018998179223152L;
 
 	@JsonProperty("id")
-	private int id;
+	private String id;
 	@JsonProperty("id_account")
 	private int id_cuenta;
 	@JsonProperty("id_user")

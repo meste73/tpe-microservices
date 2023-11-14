@@ -2,6 +2,9 @@ package com.arqui.integrador.controller;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,6 +29,7 @@ import com.arqui.integrador.service.TravelService;
 public class TravelController {
 
 	private TravelService service;
+	private static final Logger LOG = LoggerFactory.getLogger(TravelController.class);
 
 	public TravelController(TravelService service) {
 		this.service = service;
@@ -41,6 +45,11 @@ public class TravelController {
 		}
 	}
 
+	// @GetMapping()
+	// public ResponseEntity<String>getTravels(){
+	// 	return ResponseEntity.ok("funciona");
+	// }
+
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<TravelDto> getTravelById(@PathVariable String id) {
 		Long id1 = Long.valueOf(id);
@@ -54,6 +63,8 @@ public class TravelController {
 
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public void addTravel(@RequestBody TravelDto t) {
+		LOG.info("------------CONTROLLER------------");
+		LOG.info(t.toString());
 		service.createTravel(t);
 	}
 
