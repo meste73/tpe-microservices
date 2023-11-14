@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import com.arqui.integrador.model.Travel;
 
 @Repository
-public interface TravelRepository extends MongoRepository<Travel, Long> {
+public interface TravelRepository extends MongoRepository<Travel, String> {
 
 //	@Query("SELECT new com.arqui.integrador.dto.PausedTimeResponseDto(t.id_scooter, SUM(t.pause_time)) FROM com.arqui.integrador.model.Travel t GROUP BY t.id_scooter")
 //	List<PausedTimeResponseDto> getAllByPause();

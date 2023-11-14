@@ -52,8 +52,8 @@ public class TravelController {
 
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<TravelDto> getTravelById(@PathVariable String id) {
-		Long id1 = Long.valueOf(id);
-		TravelDto travel = service.getById(id1);
+		// String id1 = id;
+		TravelDto travel = service.getById(id);
 		if (travel != null) {
 			return ResponseEntity.ok(travel);
 		} else {
@@ -70,14 +70,14 @@ public class TravelController {
 
 	@PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public void updateTravel(@RequestBody TravelDto t, @PathVariable String id) {
-		Long id1 = Long.valueOf(id);
-		service.update(t, id1);
+		// Long id1 = Long.valueOf(id);
+		service.update(t, id);
 	}
 
 	@DeleteMapping(value = "/{id}")
 	public void deleteTravel(@PathVariable String id) {
-		Long id1 = Long.valueOf(id);
-		service.delete(id1);
+		// Long id1 = Long.valueOf(id);
+		service.delete(id);
 	}
 
 //	@GetMapping(value = "/paused")

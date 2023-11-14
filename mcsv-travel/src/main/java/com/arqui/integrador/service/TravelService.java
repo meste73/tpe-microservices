@@ -27,7 +27,7 @@ public class TravelService {
 		this.mapper = mapper;
 	}
 
-	public TravelDto getById(Long id) {
+	public TravelDto getById(String id) {
 		Travel t = repository.findById(id).orElse(null);
 		return mapper.convertValue(t, TravelDto.class);
 	}
@@ -48,7 +48,7 @@ public class TravelService {
 	}
 
 	@Transactional
-	public void update(TravelDto t, Long id) {
+	public void update(TravelDto t, String id) {
 		Travel t1 = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado"));
 		t1 = mapper.convertValue(t, Travel.class);
 		t1.setCost(t.getCost());
@@ -58,7 +58,7 @@ public class TravelService {
 		repository.save(t1);
 	}
 
-	public void delete(Long id) {
+	public void delete(String id) {
 		repository.deleteById(id);
 	}
 

@@ -15,7 +15,7 @@ public class AppConfig {
 		ObjectMapper objectMapper = new ObjectMapper();
 		objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS,
 		false);
-		// objectMapper.registerModule(new JavaTimeModule()); // agregue esto por las fechas
+		objectMapper.registerModule(new JavaTimeModule()); // agregue esto por las fechas
 		return objectMapper;
 	}
 }
