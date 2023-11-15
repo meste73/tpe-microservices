@@ -3,8 +3,10 @@ package com.arqui.integrador.security;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -21,8 +23,10 @@ public class JwtTokenManager {
 	private String secret;
 
 	public String generateJwtToken(UserDetails userDetails) {
+		String authorities = userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.joining(","));
+		
 		Map<String, Object> claims = new HashMap<>();
-
+		claims.put("roles", authorities);
 		return Jwts.builder()
 				.setClaims(claims)
 				.setSubject(userDetails.getUsername())
@@ -38,7 +42,7 @@ public class JwtTokenManager {
 				.setSigningKey(this.secret)
 				.parseClaimsJws(token)
 				.getBody();
-
+		
 		boolean isTokenExpired = claims.getExpiration().before(new Date());
 
 		return (username.equals(userDetails.getUsername()) && !isTokenExpired);

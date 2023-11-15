@@ -1,6 +1,9 @@
 package com.arqui.integrador.dto;
 
+import java.util.List;
+
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,4 +20,7 @@ public class UserAuthRequestDto {
 	
 	@NotBlank
 	private String password;
+	
+	@NotNull
+	private List<String> roles;
 }

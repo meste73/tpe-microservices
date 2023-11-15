@@ -1,7 +1,5 @@
 package com.arqui.integrador.filter;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.stereotype.Component;
@@ -12,8 +10,6 @@ import com.google.common.net.HttpHeaders;
 
 @Component
 public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config>{
-	
-	private static final Logger LOG = LoggerFactory.getLogger(AuthFilter.class);
 	
 	private RouteValidator routeValidator;
 	
@@ -27,17 +23,15 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config>{
 
 	@Override
 	public GatewayFilter apply(Config config) {
-		LOG.info("gateway filter");
 		return ((exchange, chain)->{
-			LOG.info("inside return");
 			
 			if(routeValidator.isSecured.test(exchange.getRequest())) {
-				LOG.info("inside route validator if");
 				if(!exchange.getRequest().getHeaders().containsKey(HttpHeaders.AUTHORIZATION)) {
 					throw new RuntimeException("Missin auth header");
 				}
-				
 				String authHeader = exchange.getRequest().getHeaders().get(HttpHeaders.AUTHORIZATION).get(0);
+				
+				String path = exchange.getRequest().getURI().getPath();
 				
 				String[] parts = authHeader.split(" ");
 				
@@ -45,7 +39,7 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config>{
 					throw new RuntimeException("Incorrect auth structure");
 				}
 				try {
-					jwtUtil.validateJwtToken(parts[1]);
+					jwtUtil.validateJwtToken(parts[1], path);
 				}catch(Exception e) {
 					throw new RuntimeException("Unauthorized access");
 				}
