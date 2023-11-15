@@ -2,14 +2,25 @@ package com.arqui.integrador.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.arqui.integrador.controller.TravelController;
+import com.arqui.integrador.dto.PausedTimeResponseDto;
+import com.arqui.integrador.dto.PriceDto;
 import com.arqui.integrador.dto.TravelDto;
+import com.arqui.integrador.model.Price;
 import com.arqui.integrador.model.Travel;
+import com.arqui.integrador.repository.PriceRepository;
 import com.arqui.integrador.repository.TravelRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -19,11 +30,18 @@ import jakarta.persistence.EntityNotFoundException;
 public class TravelService {
 
 	private TravelRepository repository;
-	
+	private PriceRepository priceRepository;
+
+	private static final Logger LOG = LoggerFactory.getLogger(TravelService.class);
+
 	private ObjectMapper mapper;
-	
-	public TravelService(TravelRepository repository, @Qualifier("mapper")ObjectMapper mapper) {
+
+	public TravelService(	TravelRepository repository, 
+							@Qualifier("mapper") ObjectMapper mapper,
+							PriceRepository priceRepository
+	) {
 		this.repository = repository;
+		this.priceRepository = priceRepository;
 		this.mapper = mapper;
 	}
 
@@ -62,20 +80,26 @@ public class TravelService {
 		repository.deleteById(id);
 	}
 
-//	public List<PausedTimeResponseDto> getAllByPause() {
-//		return repository.getAllByPause();
-//	}
-//
-//	public List<TravelsScooterResponseDto> getAllByYearQuantity(int year, Long quantity) {
-//		return repository.getQuantityByYear(year, quantity);
-//	}
-//
-//	public BillDto getBills(int year, int month1, int month2) {
-//		return repository.getBillsByDate(year, month1, month2);
-//	}
-//	
-//	public void newPrice(PriceDto p) {
-//		Price p1 = mapper.convertValue(p, Price.class);
-//		repository.save(p1);
-//	}
+	public List<PausedTimeResponseDto> getAllByPause() {
+		List<PausedTimeResponseDto> result = repository.getAllByPause();
+		LOG.info(result.toString());
+		return result;
+	}
+
+	// public BillDto getBills(int year, int month1, int month2) {
+	// return repository.getBillsByDate(year, month1, month2);
+	// }
+
+	// public List<TravelsScooterResponseDto> getAllByYearQuantity(int year, Long
+	// quantity) {
+	// return repository.getQuantityByYear(year, quantity);
+	// }
+
+
+	public void newPrice(PriceDto p) {
+		Price p1 = mapper.convertValue(p, Price.class);
+		LOG.info("========================newPrice==========================");
+		LOG.info(p1.toString());
+		priceRepository.save(p1);
+	}
 }

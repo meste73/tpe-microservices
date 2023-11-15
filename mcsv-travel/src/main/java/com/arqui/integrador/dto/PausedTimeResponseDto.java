@@ -2,6 +2,8 @@ package com.arqui.integrador.dto;
 
 import java.io.Serializable;
 
+import org.springframework.data.mongodb.core.mapping.Field;
+
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -21,7 +23,10 @@ public class PausedTimeResponseDto implements Serializable {
 	private static final long serialVersionUID = -7822551077921357978L;
 
 	@JsonProperty("id_scooter")
-	private int id_scooter;
+	@Field("_id")
+	private Integer id_scooter;
+
 	@JsonProperty("pause_time")
-	private Long pause_time;
+	@Field("pause_time")
+	private int pause_time;
 }

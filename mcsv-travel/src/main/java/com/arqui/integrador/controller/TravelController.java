@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -45,11 +45,6 @@ public class TravelController {
 		}
 	}
 
-	// @GetMapping()
-	// public ResponseEntity<String>getTravels(){
-	// 	return ResponseEntity.ok("funciona");
-	// }
-
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<TravelDto> getTravelById(@PathVariable String id) {
 		// String id1 = id;
@@ -63,13 +58,12 @@ public class TravelController {
 
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public void addTravel(@RequestBody TravelDto t) {
-		LOG.info("------------CONTROLLER------------");
-		LOG.info(t.toString());
 		service.createTravel(t);
 	}
 
 	@PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public void updateTravel(@RequestBody TravelDto t, @PathVariable String id) {
+		
 		// Long id1 = Long.valueOf(id);
 		service.update(t, id);
 	}
@@ -80,15 +74,29 @@ public class TravelController {
 		service.delete(id);
 	}
 
-//	@GetMapping(value = "/paused")
-//	public ResponseEntity<List<PausedTimeResponseDto>> getTravelsByPausedTime() {
-//		List<PausedTimeResponseDto> travel = service.getAllByPause();
-//		if (travel != null) {
-//			return ResponseEntity.ok(travel);
-//		} else {
-//			return ResponseEntity.notFound().build();
-//		}
-//	}
+	@GetMapping(value = "/paused")
+	public ResponseEntity<List<PausedTimeResponseDto>> getTravelsByPausedTime() {
+		List<PausedTimeResponseDto> travel = service.getAllByPause();
+		if (travel != null) {
+			return ResponseEntity.ok(travel);
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+	}
+
+	// @GetMapping(value = "/billing")
+	// public ResponseEntity<BillDto> getBillingByDate(@RequestParam int year, @RequestParam int month1,
+	// 		@RequestParam int month2) {
+	// 	BillDto travel = service.getBills(year, month1, month2);
+	// 	if (travel != null) {
+	// 		return ResponseEntity.ok(travel);
+	// 	} else {
+	// 		return ResponseEntity.notFound().build();
+	// 	}
+	// }
+
+
+
 //
 //	@GetMapping(value = "/filter")
 //	public ResponseEntity<List<TravelsScooterResponseDto>> getQuantityTravelsByYear(@RequestParam int year,
@@ -101,19 +109,13 @@ public class TravelController {
 //		}
 //	}
 //
-//	@GetMapping(value = "/billing")
-//	public ResponseEntity<BillDto> getBillingByDate(@RequestParam int year, @RequestParam int month1,
-//			@RequestParam int month2) {
-//		BillDto travel = service.getBills(year, month1, month2);
-//		if (travel != null) {
-//			return ResponseEntity.ok(travel);
-//		} else {
-//			return ResponseEntity.notFound().build();
-//		}
-//	}
-//	
-//	@PostMapping(value = "/price", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-//	public void createNewPrice(@RequestBody PriceDto p) {
-//		service.newPrice(p);
-//	}
+
+	
+	@PostMapping(value = "/price", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public void createNewPrice(@RequestBody PriceDto p) {
+
+		LOG.info("===========================Price===========================");
+		LOG.info(p.toString());
+		service.newPrice(p);
+	}
 }

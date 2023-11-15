@@ -3,6 +3,7 @@ package com.arqui.integrador.dto;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
@@ -27,5 +28,5 @@ public class PriceDto implements Serializable {
 	@JsonProperty("rate_of_increase")
 	private BigDecimal rate_of_increase;
 	@JsonProperty("actual_date")
-	private Timestamp actual_date;
+	private Timestamp actual_date; 
 }

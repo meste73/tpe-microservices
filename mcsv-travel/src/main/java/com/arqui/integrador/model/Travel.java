@@ -25,10 +25,10 @@ import lombok.ToString;
 
 		private static final long serialVersionUID = -1680823192265785318L;
 		@Id
-		private String id; // segun chatGPT, esto debe ser String
+		private String id; 
 		private int id_account;
 		private int id_user;
-		private int id_scooter;
+		private Integer id_scooter;
 		@CreatedDate
 		private LocalDateTime start_date;
 		@LastModifiedDate
