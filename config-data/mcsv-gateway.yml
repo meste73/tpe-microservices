@@ -20,22 +20,37 @@ spring:
       uri: lb://mcsv-administrator
       predicates:
        - Path=/administrator/**
+      filters:
+       - AuthFilter
+
     - id: mcsv-maintenance
       uri: lb://mcsv-maintenance
       predicates:
        - Path=/maintenance/**
+      filters:
+       - AuthFilter
+
     - id: mcsv-scooter
       uri: lb://mcsv-scooter
       predicates:
        - Path=/scooters/**
+      filters:
+       - AuthFilter
+
     - id: mcsv-station
       uri: lb://mcsv-station
       predicates:
        - Path=/stations/**
+      filters:
+       - AuthFilter
+
     - id: mcsv-travel
       uri: lb://mcsv-travel
       predicates:
        - Path=/travels/**
+      filters:
+       - AuthFilter
+
     - id: mcsv-user
       uri: lb://mcsv-user
       predicates:
