@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -47,7 +46,6 @@ public class TravelController {
 
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<TravelDto> getTravelById(@PathVariable String id) {
-		// String id1 = id;
 		TravelDto travel = service.getById(id);
 		if (travel != null) {
 			return ResponseEntity.ok(travel);
@@ -63,14 +61,11 @@ public class TravelController {
 
 	@PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public void updateTravel(@RequestBody TravelDto t, @PathVariable String id) {
-
-		// Long id1 = Long.valueOf(id);
 		service.update(t, id);
 	}
 
 	@DeleteMapping(value = "/{id}")
 	public void deleteTravel(@PathVariable String id) {
-		// Long id1 = Long.valueOf(id);
 		service.delete(id);
 	}
 
@@ -91,7 +86,6 @@ public class TravelController {
 		if (travel != null) {
 			return ResponseEntity.ok(travel);
 		} else {
-			LOG.info("\n \n \n \n -------------------------  Estoy Aca ----------------------- ");
 			return ResponseEntity.notFound().build();
 		}
 	}
@@ -110,8 +104,6 @@ public class TravelController {
 	@PostMapping(value = "/price", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public void createNewPrice(@RequestBody PriceDto p) {
 
-		LOG.info("===========================Price===========================");
-		LOG.info(p.toString());
 		service.newPrice(p);
 
 	}
