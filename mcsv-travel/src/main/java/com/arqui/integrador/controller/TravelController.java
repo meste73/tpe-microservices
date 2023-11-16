@@ -63,7 +63,7 @@ public class TravelController {
 
 	@PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public void updateTravel(@RequestBody TravelDto t, @PathVariable String id) {
-		
+
 		// Long id1 = Long.valueOf(id);
 		service.update(t, id);
 	}
@@ -91,12 +91,10 @@ public class TravelController {
 		if (travel != null) {
 			return ResponseEntity.ok(travel);
 		} else {
+			LOG.info("\n \n \n \n -------------------------  Estoy Aca ----------------------- ");
 			return ResponseEntity.notFound().build();
 		}
 	}
-
-
-
 
 	@GetMapping(value = "/filter")
 	public ResponseEntity<List<TravelsScooterResponseDto>> getQuantityTravelsByYear(@RequestParam int year,
@@ -109,8 +107,6 @@ public class TravelController {
 		}
 	}
 
-
-	
 	@PostMapping(value = "/price", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public void createNewPrice(@RequestBody PriceDto p) {
 

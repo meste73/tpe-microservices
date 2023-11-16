@@ -15,6 +15,22 @@ import com.arqui.integrador.model.Travel;
 @Repository
 public interface TravelRepository extends MongoRepository<Travel, String> {
 
+    
+    @Aggregation({
+        "{ $match: { $expr: { $and: [ { $eq: [ { $year: { $toDate: '$start_date' } }, ?0 ] }, { $gte: [ { $month: { $toDate: '$start_date' } }, ?1 ] }, { $lte: [ { $month: { $toDate: '$start_date' } }, ?2 ] } ] } } }",
+        "{ $group: { _id: { year: { $year: { $toDate: '$start_date' } }, month: { $month: { $toDate: '$start_date' } } }, total: { $sum: '$cost' } } }",
+        "{ $project: { _id: 0, year: '$_id.year', month: '$_id.month', total: 1 } }"
+    })
+    BillDto getBillsByDate(int year, int month1, int month2);
+
+    
+    // @Aggregation({"{ $match: { $expr: { $and: [ { $eq: [ { $year: { $toDate: '$start_date' } },?0 ] }, { $gte: [ { $month: { $toDate: '$start_date' } }, ?1 ] }, { $lte: [ {$month: { $toDate: '$start_date' } }, ?2 ] } ] } } }",
+    // "{ $group: { _id: null, total: { $sum: '$cost' } } }",
+    // "{ $project: { _id: 0, total: 1 } }"
+    // })
+    // BillDto getBillsByDate(int year, int month1, int month2);
+
+
     @Aggregation({
             "{ $group: { _id: '$id_scooter', totalPauseTime: { $sum: '$pause_time' } } }",
             "{ $project: { _id: '$_id', id_scooter: '$_id', pause_time: '$totalPauseTime' } }"
@@ -33,13 +49,14 @@ public interface TravelRepository extends MongoRepository<Travel, String> {
     // "{ $match: { count: { $gt: ?1 } } }", // Si queremos que sea Solo mayor y no
     // mayor o igual, es $gt en vez de $gte
 
-
-    @Aggregation({
-            "{ $match: { $expr: { $and: [ { $eq: [ { $year: '$start_date' }, ?0 ] }, { $gte: [ { $month: '$start_date' }, ?1 ] }, { $lte: [ { $month: '$start_date' }, ?2 ] } ] } } }",
-            "{ $group: { _id: null, total_value: { $sum: '$cost' } } }",
-            "{ $project: { _id: 0, total_value: 1 } }"
-    })
-    BillDto getBillsByDate(int year, int month1, int month2);
+    // @Aggregation({
+    // "{ $match: { $expr: { $and: [ { $eq: [ { $year: '$start_date' }, ?0 ] },
+    // {$gte: [ { $month: '$start_date' }, ?1 ] }, { $lte: [ { $month:
+    // '$start_date'}, ?2 ] } ] } } }",
+    // "{ $group: { _id: null, total: { $sum: '$cost' } } }",
+    // "{ $project: { _id: 0, total: 1 } }"
+    // })
+    // BillDto getBillsByDate(int year, int month1, int month2);
 
     // @Query("SELECT new com.arqui.integrador.dto.BillDto (SUM (t.cost) AS
     // total_value) FROM com.arqui.integrador.model.Travel t WHERE

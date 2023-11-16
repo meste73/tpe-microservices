@@ -1,6 +1,8 @@
 package com.arqui.integrador.service;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -10,7 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.Fields;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +27,7 @@ import com.arqui.integrador.dto.TravelDto;
 import com.arqui.integrador.dto.TravelsScooterResponseDto;
 import com.arqui.integrador.model.Price;
 import com.arqui.integrador.model.Travel;
+import com.arqui.integrador.repository.CustomTravelRepository;
 import com.arqui.integrador.repository.PriceRepository;
 import com.arqui.integrador.repository.TravelRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -33,6 +39,8 @@ public class TravelService {
 
 	private TravelRepository repository;
 	private PriceRepository priceRepository;
+	// private final CustomTravelRepository customTravelRepository;
+	private final MongoTemplate mongoTemplate;
 
 	private static final Logger LOG = LoggerFactory.getLogger(TravelService.class);
 
@@ -40,9 +48,15 @@ public class TravelService {
 
 	public TravelService(TravelRepository repository,
 			@Qualifier("mapper") ObjectMapper mapper,
-			PriceRepository priceRepository) {
+			PriceRepository priceRepository
+			// ,@Qualifier("customTravelRepositoryImpl") CustomTravelRepository
+			// customTravelRepository
+			, MongoTemplate mongoTemplate) {
+		this.mongoTemplate = mongoTemplate;
+
 		this.repository = repository;
 		this.priceRepository = priceRepository;
+		// this.customTravelRepository = customTravelRepository;
 		this.mapper = mapper;
 	}
 
@@ -88,7 +102,40 @@ public class TravelService {
 	}
 
 	public BillDto getBills(int year, int month1, int month2) {
-	return repository.getBillsByDate(year, month1, month2);
+
+		LOG.info("\n \n \n \n");
+		LOG.info("========================getBills==========================");
+		// BillDto response = repository.getBillsByDate(year, month1, month2);
+		// LOG.info(response.toString());
+
+		Date startDate = convertToStartDate(year, month1);
+		Date endDate = convertToEndDate(year, month2);
+
+		Aggregation aggregation = Aggregation.newAggregation(
+            // Match documents based on the conditions
+            Aggregation.match(Criteria.where("start_date").gte(startDate).lte(endDate)),
+
+            // Project to extract year and month from the start_date
+            Aggregation.project()
+                    .andExpression("year('$start_date')").as("year")
+                    .andExpression("month('$start_date')").as("month"),
+
+            // Match documents within the specified months
+            Aggregation.match(Criteria.where("month").gte(month1).lte(month2)),
+
+            // Group by year and count the number of documents
+            Aggregation.group(Fields.from(Fields.field("year", "$year")))
+                    .count().as("total"),
+
+            // Project to shape the output
+            Aggregation.project()
+                    .and("total").as("total")
+    );
+
+    return mongoTemplate.aggregate(aggregation, "Travel", BillDto.class).getUniqueMappedResult();
+
+		// return response;
+		// return customTravelRepository.getBillsByDate(year, month1, month2);
 	}
 
 	public List<TravelsScooterResponseDto> getAllByYearQuantity(int year, Long quantity) {
@@ -97,8 +144,25 @@ public class TravelService {
 
 	public void newPrice(PriceDto p) {
 		Price p1 = mapper.convertValue(p, Price.class);
-		LOG.info("========================newPrice==========================");
-		LOG.info(p1.toString());
 		priceRepository.save(p1);
+	}
+
+	private Date convertToStartDate(int year, int month) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(Calendar.YEAR, year);
+		calendar.set(Calendar.MONTH, month - 1); // Month in Calendar is 0-based
+		calendar.set(Calendar.DAY_OF_MONTH, 1); // Set day to the first day of the month
+
+		return calendar.getTime();
+	}
+
+	private Date convertToEndDate(int year, int month) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(Calendar.YEAR, year);
+		calendar.set(Calendar.MONTH, month - 1); // Month in Calendar is 0-based
+		calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH)); // Set day to the last
+																								// day of the month
+
+		return calendar.getTime();
 	}
 }

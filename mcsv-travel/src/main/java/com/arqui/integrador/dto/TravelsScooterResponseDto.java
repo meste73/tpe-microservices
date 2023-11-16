@@ -27,4 +27,5 @@ public class TravelsScooterResponseDto implements Serializable {
 	private int id_scooter;
 	@JsonProperty("travel_quantity")
 	private Long travel_quantity;
+
 }

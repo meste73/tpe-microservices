@@ -23,7 +23,8 @@ public class BillDto implements Serializable {
 
 	private static final long serialVersionUID = 6393167105538475504L;
 
-	@JsonProperty("total_value")
-	// @Field("_id")
+
+	@JsonProperty("total")
+	@Field("total")
 	private BigDecimal total;
 }
