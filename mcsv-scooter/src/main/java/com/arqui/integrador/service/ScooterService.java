@@ -26,8 +26,14 @@ import com.arqui.integrador.dto.ScooterOperationDTO;
 import com.arqui.integrador.dto.ScooterPauseDTO;
 import com.arqui.integrador.dto.ScooterReportDTO;
 import com.arqui.integrador.exception.ItemNotFoundException;
+import com.arqui.integrador.grpc.StationGrpcObject;
+import com.arqui.integrador.grpc.StationGrpcObjectList;
+import com.arqui.integrador.grpc.StationServiceGrpc;
 import com.arqui.integrador.model.Scooter;
 import com.arqui.integrador.repository.IScooterRepository;
+
+import io.grpc.ManagedChannel;
+import io.grpc.netty.NettyChannelBuilder;
 
 @Service
 public class ScooterService implements IScooterService{
@@ -181,6 +187,51 @@ public class ScooterService implements IScooterService{
 		LOG.info("Scooters: {} Quantity: {}", response, response.size());
 		
 		return response;
+	}
+
+	@Override
+	public StationGrpcObject getNearestStation(Long id) {
+		ManagedChannel channel = NettyChannelBuilder.forTarget("dns:///localhost:6565").
+				usePlaintext().build();
+		
+		Scooter scooter = this.findById(id);
+		
+		StationServiceGrpc.StationServiceBlockingStub stub = StationServiceGrpc.newBlockingStub(channel);
+		
+		StationGrpcObject response = stub.getNearest(
+				com.arqui.integrador.grpc.Location.newBuilder().
+					setLatitude(scooter.getLatitude()).
+					setLongitude(scooter.getLongitude()).
+					build());
+		
+		LOG.info("Nearest Station: {} ", response);
+		
+		channel.shutdown();
+		
+		return response;
+	}
+
+	@Override
+	public StationGrpcObjectList getNearStations(Long id) {
+		ManagedChannel channel = NettyChannelBuilder.forTarget("dns:///localhost:6565").
+				usePlaintext().build();
+		
+		Scooter scooter = this.findById(id);
+		
+		StationServiceGrpc.StationServiceBlockingStub stub = StationServiceGrpc.newBlockingStub(channel);
+		
+		StationGrpcObjectList response = stub.getNearStations(
+				com.arqui.integrador.grpc.Location.newBuilder().
+					setLatitude(scooter.getLatitude()).
+					setLongitude(scooter.getLongitude()).
+					build());
+		
+		LOG.info("Near Stations: {} ", response);
+		
+		channel.shutdown();
+		
+		return response;
+		
 	}
 	
 }

@@ -7,6 +7,8 @@ import com.arqui.integrador.dto.ScooterListDTO;
 import com.arqui.integrador.dto.ScooterNearestDTO;
 import com.arqui.integrador.dto.ScooterOperationDTO;
 import com.arqui.integrador.dto.ScooterReportDTO;
+import com.arqui.integrador.grpc.StationGrpcObject;
+import com.arqui.integrador.grpc.StationGrpcObjectList;
 
 public interface IScooterService {
 
@@ -31,5 +33,9 @@ public interface IScooterService {
 	List<ScooterDTO> getAllDisable(String order);
 	
 	void updateScootersMaintenance(ScooterListDTO ids);
+	
+	StationGrpcObject getNearestStation(Long id);
+	
+	StationGrpcObjectList getNearStations(Long id);
 
 }

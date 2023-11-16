@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package com.arqui.integrador.grpc;
+
+option java_multiple_files = true;
+option java_package = "com.arqui.integrador.grpc";
+
+service StationGrpcService{
+  rpc getNearest(Location) returns (StationGrpcObject){}
+  rpc getNearStations (Location) returns (StationGrpcObjectList){}
+}
+
+message Location{
+	double latitude = 1;
+	double longitude = 2;
+}
+
+message StationGrpcObject{
+  	int32 id = 1;
+	string location = 2;
+	double latitude = 3;
+	double longitude = 4;
+}
+
+message StationGrpcObjectList{
+  repeated StationGrpcObject station = 1;
+}

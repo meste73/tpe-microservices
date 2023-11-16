@@ -9,6 +9,8 @@ import com.arqui.integrador.dto.ScooterListDTO;
 import com.arqui.integrador.dto.ScooterNearestDTO;
 import com.arqui.integrador.dto.ScooterOperationDTO;
 import com.arqui.integrador.dto.ScooterReportDTO;
+import com.arqui.integrador.grpc.StationGrpcObject;
+import com.arqui.integrador.grpc.StationGrpcObjectList;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -126,6 +128,24 @@ public class ScooterController implements IScooterController {
 		
 		LOG.info("Updating scooters by id: {}", ids);
 		
+	}
+
+	@Override
+	public ResponseEntity<StationGrpcObject> getNearest(Long id) {
+		StationGrpcObject response = this.scooterService.getNearestStation(id);
+		
+		LOG.info("Near Station of Scooter with id: {}", id);
+		
+		return ResponseEntity.ok(response);
+	}
+
+	@Override
+	public ResponseEntity<StationGrpcObjectList> getNearStations(Long id) {
+		StationGrpcObjectList response = this.scooterService.getNearStations(id);
+		
+		LOG.info("List of near Stations of Scooter with id: {}", id);
+		
+		return ResponseEntity.ok(response);
 	}
 
 }
