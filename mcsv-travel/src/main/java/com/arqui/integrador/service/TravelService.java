@@ -15,9 +15,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.arqui.integrador.controller.TravelController;
+import com.arqui.integrador.dto.BillDto;
 import com.arqui.integrador.dto.PausedTimeResponseDto;
 import com.arqui.integrador.dto.PriceDto;
 import com.arqui.integrador.dto.TravelDto;
+import com.arqui.integrador.dto.TravelsScooterResponseDto;
 import com.arqui.integrador.model.Price;
 import com.arqui.integrador.model.Travel;
 import com.arqui.integrador.repository.PriceRepository;
@@ -36,10 +38,9 @@ public class TravelService {
 
 	private ObjectMapper mapper;
 
-	public TravelService(	TravelRepository repository, 
-							@Qualifier("mapper") ObjectMapper mapper,
-							PriceRepository priceRepository
-	) {
+	public TravelService(TravelRepository repository,
+			@Qualifier("mapper") ObjectMapper mapper,
+			PriceRepository priceRepository) {
 		this.repository = repository;
 		this.priceRepository = priceRepository;
 		this.mapper = mapper;
@@ -86,15 +87,13 @@ public class TravelService {
 		return result;
 	}
 
-	// public BillDto getBills(int year, int month1, int month2) {
-	// return repository.getBillsByDate(year, month1, month2);
-	// }
+	public BillDto getBills(int year, int month1, int month2) {
+	return repository.getBillsByDate(year, month1, month2);
+	}
 
-	// public List<TravelsScooterResponseDto> getAllByYearQuantity(int year, Long
-	// quantity) {
-	// return repository.getQuantityByYear(year, quantity);
-	// }
-
+	public List<TravelsScooterResponseDto> getAllByYearQuantity(int year, Long quantity) {
+		return repository.getQuantityByYear(year, quantity);
+	}
 
 	public void newPrice(PriceDto p) {
 		Price p1 = mapper.convertValue(p, Price.class);
