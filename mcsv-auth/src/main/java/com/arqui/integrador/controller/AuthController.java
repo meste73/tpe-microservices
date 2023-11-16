@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.arqui.integrador.dto.TokenDto;
 import com.arqui.integrador.dto.UserAuthRequestDto;
+import com.arqui.integrador.exception.CustomBadCredentialsException;
+import com.arqui.integrador.exception.UnauthorizedTokenException;
 import com.arqui.integrador.security.JwtTokenManager;
 import com.arqui.integrador.service.AuthService;
 
@@ -45,7 +47,8 @@ public class AuthController implements IAuthController{
 			throw new DisabledException("User with username: " + user.getUsername() + " is disabled");
 			
 		} catch (BadCredentialsException e) {
-			throw new BadCredentialsException("Username or password is incorrect");
+			LOG.info("password incorrect");
+			throw new CustomBadCredentialsException("Bad credentials", "User or password incorrect.");
 		}
 		
 		final UserDetails userDetails = authService.loadUserByUsername(user.getUsername());
@@ -73,7 +76,7 @@ public class AuthController implements IAuthController{
 		if(this.jwtTokenManager.validateJwtToken(token, userDetails)) {
 			return ResponseEntity.ok(TokenDto.builder().token(token).build());
 		} else {
-			throw new RuntimeException("Invalid token");
+			throw new UnauthorizedTokenException("Unauthorized token", "Token provided is not authorized or is expired.");
 		}
 	}
 }

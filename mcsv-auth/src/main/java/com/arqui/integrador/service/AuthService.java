@@ -9,11 +9,11 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.arqui.integrador.dto.UserAuthRequestDto;
+import com.arqui.integrador.exception.UserNotFoundException;
 import com.arqui.integrador.model.Role;
 import com.arqui.integrador.model.UserAuth;
 import com.arqui.integrador.repository.IAuthRepository;
@@ -31,11 +31,11 @@ public class AuthService implements UserDetailsService{
 	}
 	
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+	public UserDetails loadUserByUsername(String username) throws UserNotFoundException {
 
 		return authRepository.findByUsername(username)
 				.map(user -> new User(user.getUsername(), user.getPassword(), getAuthorities(user.getRole())))
-				.orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
+				.orElseThrow(() -> new UserNotFoundException("User not found","User not found with username: " + username));
 	}
 	
 	public void register(UserAuthRequestDto user) {
