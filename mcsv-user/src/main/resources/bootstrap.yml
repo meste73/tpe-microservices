@@ -1,0 +1,14 @@
+spring:
+ datasource:
+  url: jdbc:postgresql://localhost:5432/mcsv-user
+  username: postgres
+  password: Mestelan2610
+ jpa:
+  hibernate:
+   ddl-auto: update
+ application:
+  name: mcsv-user
+ cloud:
+  config:
+   enabled: true
+   uri: http://localhost:8081
