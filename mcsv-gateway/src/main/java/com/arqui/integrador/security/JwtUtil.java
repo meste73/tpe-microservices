@@ -25,12 +25,12 @@ public class JwtUtil {
 		
 		boolean hasRole = false;
 		
-		if(path.contains("/administrator")) {
-			hasRole = hasRole(claims, "ADMIN");
+		if(path.contains("/users") || path.contains("/accounts")) {
+			hasRole = hasRole(claims, "ADMIN,USER");
 		} else if(path.contains("/maintenance")) {
 			hasRole = hasRole(claims, "ADMIN,MAINTENANCE");
 		} else {
-			hasRole = hasRole(claims, "ADMIN,USER");
+			hasRole = hasRole(claims, "ADMIN");
 		}
 		
 		boolean isTokenExpired = claims.getExpiration().before(new Date());
