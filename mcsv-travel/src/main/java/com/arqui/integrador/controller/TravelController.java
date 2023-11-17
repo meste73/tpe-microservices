@@ -2,6 +2,8 @@ package com.arqui.integrador.controller;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,6 +28,7 @@ import com.arqui.integrador.service.TravelService;
 public class TravelController {
 
 	private TravelService service;
+	private static final Logger LOG = LoggerFactory.getLogger(TravelController.class);
 
 	public TravelController(TravelService service) {
 		this.service = service;
@@ -43,8 +46,7 @@ public class TravelController {
 
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<TravelDto> getTravelById(@PathVariable String id) {
-		Long id1 = Long.valueOf(id);
-		TravelDto travel = service.getById(id1);
+		TravelDto travel = service.getById(id);
 		if (travel != null) {
 			return ResponseEntity.ok(travel);
 		} else {
@@ -59,19 +61,28 @@ public class TravelController {
 
 	@PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public void updateTravel(@RequestBody TravelDto t, @PathVariable String id) {
-		Long id1 = Long.valueOf(id);
-		service.update(t, id1);
+		service.update(t, id);
 	}
 
 	@DeleteMapping(value = "/{id}")
 	public void deleteTravel(@PathVariable String id) {
-		Long id1 = Long.valueOf(id);
-		service.delete(id1);
+		service.delete(id);
 	}
 
 	@GetMapping(value = "/paused")
 	public ResponseEntity<List<PausedTimeResponseDto>> getTravelsByPausedTime() {
 		List<PausedTimeResponseDto> travel = service.getAllByPause();
+		if (travel != null) {
+			return ResponseEntity.ok(travel);
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+	}
+
+	@GetMapping(value = "/billing")
+	public ResponseEntity<BillDto> getBillingByDate(@RequestParam int year, @RequestParam int month1,
+			@RequestParam int month2) {
+		BillDto travel = service.getBills(year, month1, month2);
 		if (travel != null) {
 			return ResponseEntity.ok(travel);
 		} else {
@@ -90,19 +101,10 @@ public class TravelController {
 		}
 	}
 
-	@GetMapping(value = "/billing")
-	public ResponseEntity<BillDto> getBillingByDate(@RequestParam int year, @RequestParam int month1,
-			@RequestParam int month2) {
-		BillDto travel = service.getBills(year, month1, month2);
-		if (travel != null) {
-			return ResponseEntity.ok(travel);
-		} else {
-			return ResponseEntity.notFound().build();
-		}
-	}
-	
 	@PostMapping(value = "/price", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public void createNewPrice(@RequestBody PriceDto p) {
+
 		service.newPrice(p);
+
 	}
 }
