@@ -20,8 +20,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Table(name = "administrator")
 public class Administrator implements Serializable {
-    
-    @Id
+   
+	private static final long serialVersionUID = 3253615484910702243L;
+
+	@Id
     @Column(name = "administrator_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
