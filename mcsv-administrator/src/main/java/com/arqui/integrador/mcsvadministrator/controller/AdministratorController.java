@@ -1,6 +1,5 @@
 package com.arqui.integrador.mcsvadministrator.controller;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.arqui.integrador.mcsvadministrator.dto.AdministratorDTO;
 import com.arqui.integrador.mcsvadministrator.dto.FareDTO;
-import com.arqui.integrador.mcsvadministrator.dto.ScooterForMaintenanceDTO;
 import com.arqui.integrador.mcsvadministrator.dto.ScooterOperationDTO;
 import com.arqui.integrador.mcsvadministrator.dto.TravelsByTotalBillingAmount;
 import com.arqui.integrador.mcsvadministrator.dto.TravelsByYearsDTO;
@@ -72,9 +70,6 @@ public class AdministratorController implements IAdministratorController {
 		
 		LOG.info("Deleting administrator with id: {}", id);
     }
-
-
-
 
     @Override
     public void unauthorizeAccount(Long id) {

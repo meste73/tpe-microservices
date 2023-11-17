@@ -19,8 +19,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Scooter {
 	
-	private static final long serialVersionUID = 1L;
-	
 	@Id
 	@Column(name = "scooter_id")
 	@GeneratedValue(strategy = GenerationType.AUTO)

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class RouteValidator {
 	
-	public static final List<String> openApiEndpoints = List.of("/auth");
+	public static final List<String> openApiEndpoints = List.of("/auth", "/swagger");
 	
 	public Predicate<ServerHttpRequest> isSecured = 
 			request -> openApiEndpoints

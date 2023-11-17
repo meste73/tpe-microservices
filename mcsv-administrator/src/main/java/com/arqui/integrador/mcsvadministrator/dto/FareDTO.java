@@ -19,7 +19,8 @@ import lombok.NoArgsConstructor;
 @JsonIgnoreProperties
 public class FareDTO implements Serializable{
 
-    private BigDecimal price_by_hour;
+	private static final long serialVersionUID = 1L;
+	private BigDecimal price_by_hour;
     private BigDecimal rate_of_increase;
     private Timestamp actual_date;
 }

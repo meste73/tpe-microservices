@@ -119,7 +119,7 @@ public class TravelService {
       // Group by year and count the number of documents
       Aggregation
         .group(Fields.from(Fields.field("year", "$year")))
-        .count()
+        .sum("cost")
         .as("total"),
       // Project to shape the output
       Aggregation.project().and("total").as("total")
@@ -139,6 +139,7 @@ public class TravelService {
 
   public void newPrice(PriceDto p) {
     Price p1 = mapper.convertValue(p, Price.class);
+    LOG.info("new price: {}", p1);
     priceRepository.save(p1);
   }
 

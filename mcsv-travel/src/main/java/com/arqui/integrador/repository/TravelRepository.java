@@ -17,12 +17,12 @@ import com.arqui.integrador.model.Travel;
 public interface TravelRepository extends MongoRepository<Travel, String> {
 
     
-    @Aggregation({
+    /*@Aggregation({
         "{$match: { $expr: { $and: [ { $gte: [ '$start_date', ?0 ] }, { $lte: [ '$ending_date', ?1 ] } ] } } }",
         "{$group: { _id: null, total: { $sum: '$cost' } } }",
         "{$project: { _id: 0, total: 1 } }"
     })
-    BillDto getBillsByDate(Date startDate, Date endDate);
+    BillDto getBillsByDate(Date startDate, Date endDate);*/
     
 
     @Aggregation({

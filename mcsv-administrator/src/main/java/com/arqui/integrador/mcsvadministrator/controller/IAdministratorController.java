@@ -1,10 +1,9 @@
 package com.arqui.integrador.mcsvadministrator.controller;
 
-import java.time.LocalDate;
 import java.util.List;
 
-import org.springframework.http.MediaType;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.arqui.integrador.mcsvadministrator.dto.AdministratorDTO;
 import com.arqui.integrador.mcsvadministrator.dto.FareDTO;
-import com.arqui.integrador.mcsvadministrator.dto.ScooterForMaintenanceDTO;
 import com.arqui.integrador.mcsvadministrator.dto.ScooterOperationDTO;
 import com.arqui.integrador.mcsvadministrator.dto.TravelsByTotalBillingAmount;
 import com.arqui.integrador.mcsvadministrator.dto.TravelsByYearsDTO;

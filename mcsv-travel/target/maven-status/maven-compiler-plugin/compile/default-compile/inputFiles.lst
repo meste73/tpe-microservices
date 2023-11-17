@@ -4,6 +4,7 @@ C:\Users\s7\Documents\Java-Workspaces\tpe-microservices\tpe-microservices\mcsv-t
 C:\Users\s7\Documents\Java-Workspaces\tpe-microservices\tpe-microservices\mcsv-travel\src\main\java\com\arqui\integrador\dto\TravelDto.java
 C:\Users\s7\Documents\Java-Workspaces\tpe-microservices\tpe-microservices\mcsv-travel\src\main\java\com\arqui\integrador\model\Travel.java
 C:\Users\s7\Documents\Java-Workspaces\tpe-microservices\tpe-microservices\mcsv-travel\src\main\java\com\arqui\integrador\exception\CustomException.java
+C:\Users\s7\Documents\Java-Workspaces\tpe-microservices\tpe-microservices\mcsv-travel\src\main\java\com\arqui\integrador\initializer\TravelsInitializer.java
 C:\Users\s7\Documents\Java-Workspaces\tpe-microservices\tpe-microservices\mcsv-travel\src\main\java\com\arqui\integrador\model\Price.java
 C:\Users\s7\Documents\Java-Workspaces\tpe-microservices\tpe-microservices\mcsv-travel\src\main\java\com\arqui\integrador\exception\ErrorResponse.java
 C:\Users\s7\Documents\Java-Workspaces\tpe-microservices\tpe-microservices\mcsv-travel\src\main\java\com\arqui\integrador\repository\PriceRepository.java
