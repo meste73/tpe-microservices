@@ -12,7 +12,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.arqui.integrador.dto.UserAuthRequestDto;
+import com.arqui.integrador.dto.UserCreateDto;
 import com.arqui.integrador.exception.UserNotFoundException;
 import com.arqui.integrador.model.Role;
 import com.arqui.integrador.model.UserAuth;
@@ -38,7 +38,7 @@ public class AuthService implements UserDetailsService{
 				.orElseThrow(() -> new UserNotFoundException("User not found","User not found with username: " + username));
 	}
 	
-	public void register(UserAuthRequestDto user) {
+	public void register(UserCreateDto user) {
 		String bCryptedPassword = encodePassword(user.getPassword());
 		List<Role> roles = user.getRoles().stream().map(Role::new).toList();
 		

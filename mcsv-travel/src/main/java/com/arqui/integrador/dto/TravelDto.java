@@ -27,7 +27,7 @@ public class TravelDto implements Serializable {
 	@JsonProperty("id")
 	private String id;
 	@JsonProperty("id_account")
-	private int id_cuenta;
+	private int id_account;
 	@JsonProperty("id_user")
 	private int id_usuario;
 	@JsonProperty("id_scooter")

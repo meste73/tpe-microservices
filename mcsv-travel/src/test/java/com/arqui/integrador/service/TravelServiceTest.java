@@ -19,6 +19,7 @@ import com.arqui.integrador.dto.TravelDto;
 import com.arqui.integrador.exception.ItemNotFoundException;
 import com.arqui.integrador.model.Travel;
 import com.arqui.integrador.repository.TravelRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @ExtendWith(MockitoExtension.class)
 class TravelServiceTest {
@@ -32,77 +33,174 @@ class TravelServiceTest {
 	@Mock
     private RestTemplate restTemplate;
 	
+	@Mock
+	private ObjectMapper objectMapper;
+	
 	@Test
 	void getAllTest(){
 		List<Travel> travels = new ArrayList<>();
-		travels.add(Travel.builder().id("a").id_account(1).id_user(123).id_scooter(1000).start_date(LocalDateTime.of(2023, 06, 15, 0, 0)).ending_date(null).pause_time(0).km(BigDecimal.valueOf(45)).cost(BigDecimal.valueOf(5000)).paused(false).build());
-		travels.add(Travel.builder().id("b").id_account(2).id_user(1234).id_scooter(1001).start_date(LocalDateTime.of(2023, 06, 16, 0, 0)).ending_date(null).pause_time(0).km(BigDecimal.valueOf(12)).cost(BigDecimal.valueOf(1500)).paused(false).build());
-		travels.add(Travel.builder().id("c").id_account(3).id_user(12345).id_scooter(1002).start_date(LocalDateTime.of(2023, 06, 17, 0, 0)).ending_date(null).pause_time(20).km(BigDecimal.valueOf(55)).cost(BigDecimal.valueOf(6000)).paused(false).build());
-		travels.add(Travel.builder().id("d").id_account(4).id_user(456).id_scooter(1064).start_date(LocalDateTime.of(2023, 06, 25, 0, 0)).ending_date(LocalDateTime.of(2023, 07, 15, 0, 0)).pause_time(150).km(BigDecimal.valueOf(300)).cost(BigDecimal.valueOf(35000)).paused(false).build());
+		Travel travelOne = Travel.builder()
+							.id("a")
+							.id_account(1)
+							.id_user(123)
+							.id_scooter(1000)
+							.start_date(LocalDateTime.of(2023, 06, 15, 0, 0))
+							.ending_date(null)
+							.pause_time(0)
+							.km(BigDecimal.valueOf(45))
+							.cost(BigDecimal.valueOf(5000))
+							.paused(false)
+							.build();
+		
+		
+		Travel travelTwo = Travel.builder()
+							.id("b")
+							.id_account(2)
+							.id_user(1234)
+							.id_scooter(1001)
+							.start_date(LocalDateTime.of(2023, 06, 16, 0, 0))
+							.ending_date(null)
+							.pause_time(0)
+							.km(BigDecimal.valueOf(12))
+							.cost(BigDecimal.valueOf(1500))
+							.paused(false)
+							.build();
+		
+		Travel travelThree = Travel.builder()
+							.id("c")
+							.id_account(3)
+							.id_user(12345)
+							.id_scooter(1002)
+							.start_date(LocalDateTime.of(2023, 06, 17, 0, 0))
+							.ending_date(null)
+							.pause_time(20)
+							.km(BigDecimal.valueOf(55))
+							.cost(BigDecimal.valueOf(6000))
+							.paused(false)
+							.build();
+		
+		travels.add(travelOne);
+		travels.add(travelTwo);
+		travels.add(travelThree);
+		
+		TravelDto travelDtoOne = TravelDto.builder()
+				.id("a")
+				.id_account(1)
+				.id_usuario(123)
+				.id_scooter(1000)
+				.start_date(LocalDateTime.of(2023, 06, 15, 0, 0))
+				.ending_date(null)
+				.pause_time(0)
+				.km(BigDecimal.valueOf(45))
+				.cost(BigDecimal.valueOf(5000))
+				.paused(false)
+				.build();
+		
+		TravelDto travelDtoTwo = TravelDto.builder()
+				.id("b")
+				.id_account(2)
+				.id_usuario(1234)
+				.id_scooter(1001)
+				.start_date(LocalDateTime.of(2023, 06, 16, 0, 0))
+				.ending_date(null)
+				.pause_time(0)
+				.km(BigDecimal.valueOf(12))
+				.cost(BigDecimal.valueOf(1500))
+				.paused(false)
+				.build();
+		
+		TravelDto travelDtoThree = TravelDto.builder()
+				.id("c")
+				.id_account(3)
+				.id_usuario(12345)
+				.id_scooter(1002)
+				.start_date(LocalDateTime.of(2023, 06, 17, 0, 0))
+				.ending_date(null)
+				.pause_time(20)
+				.km(BigDecimal.valueOf(55))
+				.cost(BigDecimal.valueOf(6000))
+				.paused(false)
+				.build();
 		
 		Mockito.when(this.travelRepository.findAll()).thenReturn(travels);
+		Mockito.when(this.objectMapper.convertValue(travelOne, TravelDto.class)).thenReturn(travelDtoOne);
+		Mockito.when(this.objectMapper.convertValue(travelTwo, TravelDto.class)).thenReturn(travelDtoTwo);
+		Mockito.when(this.objectMapper.convertValue(travelThree, TravelDto.class)).thenReturn(travelDtoThree);
 		
 		List<TravelDto> travelsDto = this.travelService.getAll();
 		
 		Mockito.verify(this.travelRepository, Mockito.times(1)).findAll();
-		
-		Assertions.assertEquals(4L, travelsDto.size());
-		Assertions.assertEquals(1, travels.get(0).getId_account());
+		Assertions.assertEquals(3L, travelsDto.size());
+		Assertions.assertEquals(1, travelsDto.get(0).getId_account());
 		Assertions.assertEquals(2, travels.get(1).getId_account());
 		Assertions.assertEquals(3, travels.get(2).getId_account());
-		Assertions.assertEquals(4, travels.get(3).getId_account());
 		Assertions.assertEquals(123, travels.get(0).getId_user());
 		Assertions.assertEquals(1234, travels.get(1).getId_user());
 		Assertions.assertEquals(12345, travels.get(2).getId_user());
-		Assertions.assertEquals(456, travels.get(3).getId_user());
 		Assertions.assertEquals(1000, travels.get(0).getId_scooter());
 		Assertions.assertEquals(1001, travels.get(1).getId_scooter());
 		Assertions.assertEquals(1002, travels.get(2).getId_scooter());
-		Assertions.assertEquals(1064, travels.get(3).getId_scooter());
 		Assertions.assertEquals(LocalDateTime.of(2023, 06, 15, 0, 0), travels.get(0).getStart_date());
 		Assertions.assertEquals(LocalDateTime.of(2023, 06, 16, 0, 0), travels.get(1).getStart_date());
 		Assertions.assertEquals(LocalDateTime.of(2023, 06, 17, 0, 0), travels.get(2).getStart_date());
-		Assertions.assertEquals(LocalDateTime.of(2023, 06, 25, 0, 0), travels.get(3).getStart_date());
 		Assertions.assertEquals(null, travels.get(0).getEnding_date());
 		Assertions.assertEquals(null, travels.get(1).getEnding_date());
 		Assertions.assertEquals(null, travels.get(2).getEnding_date());
-		Assertions.assertEquals(LocalDateTime.of(2023, 07, 15, 0, 0), travels.get(3).getEnding_date());
 		Assertions.assertEquals(0, travels.get(0).getPause_time());
 		Assertions.assertEquals(0, travels.get(1).getPause_time());
 		Assertions.assertEquals(20, travels.get(2).getPause_time());
-		Assertions.assertEquals(150, travels.get(3).getPause_time());
 		Assertions.assertEquals(BigDecimal.valueOf(45), travels.get(0).getKm());
 		Assertions.assertEquals(BigDecimal.valueOf(12), travels.get(1).getKm());
 		Assertions.assertEquals(BigDecimal.valueOf(55), travels.get(2).getKm());
-		Assertions.assertEquals(BigDecimal.valueOf(300), travels.get(3).getKm());
 		Assertions.assertEquals(BigDecimal.valueOf(5000), travels.get(0).getCost());
 		Assertions.assertEquals(BigDecimal.valueOf(1500), travels.get(1).getCost());
 		Assertions.assertEquals(BigDecimal.valueOf(6000), travels.get(2).getCost());
-		Assertions.assertEquals(BigDecimal.valueOf(35000), travels.get(3).getCost());
 		Assertions.assertEquals(false, travels.get(0).isPaused());
 		Assertions.assertEquals(false, travels.get(1).isPaused());
 		Assertions.assertEquals(false, travels.get(2).isPaused());
-		Assertions.assertEquals(false, travels.get(3).isPaused());
 	}
 	
 	@Test
 	void getByIdTest() {
-		Travel travel = Travel.builder().id("a").id_account(1).id_user(123).id_scooter(1000).start_date(LocalDateTime.of(2023, 06, 15, 0, 0)).ending_date(null).pause_time(0).km(BigDecimal.valueOf(45)).cost(BigDecimal.valueOf(5000)).paused(false).build();
+		Travel travelOne = Travel.builder()
+				.id("a")
+				.id_account(1)
+				.id_user(123)
+				.id_scooter(1000)
+				.start_date(LocalDateTime.of(2023, 06, 15, 0, 0))
+				.ending_date(null).pause_time(0)
+				.km(BigDecimal.valueOf(45))
+				.cost(BigDecimal.valueOf(5000))
+				.paused(false)
+				.build();
 		
-		Mockito.when(this.travelRepository.findById("a")).thenReturn(Optional.of(travel));
+		TravelDto travelDtoOne = TravelDto.builder()
+				.id("a")
+				.id_account(1)
+				.id_usuario(123)
+				.id_scooter(1000)
+				.start_date(LocalDateTime.of(2023, 06, 15, 0, 0))
+				.ending_date(null)
+				.pause_time(0)
+				.km(BigDecimal.valueOf(45))
+				.cost(BigDecimal.valueOf(5000))
+				.paused(false)
+				.build();
+		
+		Mockito.when(this.travelRepository.findById("a")).thenReturn(Optional.of(travelOne));
+		Mockito.when(this.objectMapper.convertValue(travelOne, TravelDto.class)).thenReturn(travelDtoOne);
 		
 		TravelDto travelDto = this.travelService.getById("a");
 		
 		Mockito.verify(this.travelRepository, Mockito.times(1)).findById("a");
 		
-		Assertions.assertEquals(1, travelDto.getId_cuenta());
-		Assertions.assertEquals(456, travelDto.getId_usuario());
-		Assertions.assertEquals(1064, travelDto.getId_scooter());
-		Assertions.assertEquals(LocalDateTime.of(2023, 06, 25, 0, 0), travelDto.getStart_date());
-		Assertions.assertEquals(LocalDateTime.of(2023, 07, 15, 0, 0), travelDto.getEnding_date());
-		Assertions.assertEquals(150, travelDto.getPause_time());
-		Assertions.assertEquals(BigDecimal.valueOf(300), travelDto.getKm());
-		Assertions.assertEquals(BigDecimal.valueOf(35000), travelDto.getCost());
+		Assertions.assertEquals(1, travelDto.getId_account());
+		Assertions.assertEquals(123, travelDto.getId_usuario());
+		Assertions.assertEquals(1000, travelDto.getId_scooter());
+		Assertions.assertEquals(LocalDateTime.of(2023, 06, 15, 0, 0), travelDto.getStart_date());
+		Assertions.assertEquals(0, travelDto.getPause_time());
+		Assertions.assertEquals(BigDecimal.valueOf(45), travelDto.getKm());
+		Assertions.assertEquals(BigDecimal.valueOf(5000), travelDto.getCost());
 		Assertions.assertEquals(false, travelDto.isPaused());
 	}
 	
@@ -148,7 +246,7 @@ class TravelServiceTest {
 		
 		TravelDto travelDtoRequest = TravelDto.builder()
 				.id("a")
-				.id_cuenta(1)
+				.id_account(1)
 				.id_usuario(123)
 				.id_scooter(1000)
 				.start_date(LocalDateTime.of(2023, 06, 15, 0, 0))
@@ -159,79 +257,30 @@ class TravelServiceTest {
 				.paused(false)
 				.build();
 		
-		Mockito.when(this.travelRepository.save(travel)).thenReturn(travel);
+		Mockito.when(this.objectMapper.convertValue(travelDtoRequest, Travel.class)).thenReturn(travel);
 		
-		TravelDto travelDtoResponse = this.travelService.getById(travelDtoRequest.getId());
+		this.travelService.createTravel(travelDtoRequest);
 		
 		Mockito.verify(this.travelRepository, Mockito.times(1)).save(travel);
-		
-		Assertions.assertEquals(1, travelDtoResponse.getId_cuenta());
-		Assertions.assertEquals(456, travelDtoResponse.getId_usuario());
-		Assertions.assertEquals(1064, travelDtoResponse.getId_scooter());
-		Assertions.assertEquals(LocalDateTime.of(2023, 06, 25, 0, 0), travelDtoResponse.getStart_date());
-		Assertions.assertEquals(LocalDateTime.of(2023, 07, 15, 0, 0), travelDtoResponse.getEnding_date());
-		Assertions.assertEquals(150, travelDtoResponse.getPause_time());
-		Assertions.assertEquals(BigDecimal.valueOf(300), travelDtoResponse.getKm());
-		Assertions.assertEquals(BigDecimal.valueOf(35000), travelDtoResponse.getCost());
-		Assertions.assertEquals(false, travelDtoResponse.isPaused());
+
 	}
 	
-//	@Test
-//	void updateTest() {
-//		Travel travel = Travel.builder()
-//				.id("a")
-//				.id_account(1)
-//				.id_user(123)
-//				.id_scooter(1000)
-//				.start_date(LocalDateTime.of(2023, 06, 15, 0, 0))
-//				.ending_date(null)
-//				.pause_time(0)
-//				.km(BigDecimal.valueOf(45))
-//				.cost(BigDecimal.valueOf(5000))
-//				.paused(false)
-//				.build();
-//		
-//		Travel travelEdited = Travel.builder()
-//				.id("b")
-//				.id_account(2)
-//				.id_user(1234)
-//				.id_scooter(1001)
-//				.start_date(LocalDateTime.of(2023, 06, 16, 0, 0))
-//				.ending_date(null)
-//				.pause_time(0)
-//				.km(BigDecimal.valueOf(12))
-//				.cost(BigDecimal.valueOf(1500))
-//				.paused(false)
-//				.build();
-//		
-//		
-//		TravelDto travelEditedDto = TravelDto.builder()
-//				.id("b")
-//				.id_cuenta(2)
-//				.id_usuario(1234)
-//				.id_scooter(1001)
-//				.start_date(LocalDateTime.of(2023, 06, 16, 0, 0))
-//				.ending_date(null)
-//				.pause_time(0)
-//				.km(BigDecimal.valueOf(12))
-//				.cost(BigDecimal.valueOf(1500))
-//				.paused(false)
-//				.build();
-//		
-//		Mockito.when(this.travelRepository.findById("a")).thenReturn(Optional.of(travel));
-//		Mockito.when(this.travelRepository.update(travelEditedDto, travel.getId())).thenReturn(travelEdited);
-//		
-//		TravelDto travelDto = this.travelService.update(travelEditedDto, "b");
-//		
-//		Mockito.verify(this.travelRepository, Mockito.times(1)).save(travelEdited);
-//		
-//		Assertions.assertEquals("meste", travelDto.getName());
-//		Assertions.assertNotEquals("meste73", travelDto.getName());
-//	}
-	
 	@Test
-	void deleteTest() {
-		Travel admin = Travel.builder()
+	void updateTest() {
+		Travel travel = Travel.builder()
+				.id("b")
+				.id_account(1)
+				.id_user(123)
+				.id_scooter(1000)
+				.start_date(LocalDateTime.of(2023, 06, 15, 0, 0))
+				.ending_date(null)
+				.pause_time(0)
+				.km(BigDecimal.valueOf(45))
+				.cost(BigDecimal.valueOf(5000))
+				.paused(false)
+				.build();
+		
+		Travel travelEdited = Travel.builder()
 				.id("b")
 				.id_account(2)
 				.id_user(1234)
@@ -244,11 +293,33 @@ class TravelServiceTest {
 				.paused(false)
 				.build();
 		
-		Mockito.when(this.travelRepository.findById("b")).thenReturn(Optional.of(admin));
 		
+		TravelDto travelEditedDto = TravelDto.builder()
+				.id("b")
+				.id_account(2)
+				.id_usuario(1234)
+				.id_scooter(1001)
+				.start_date(LocalDateTime.of(2023, 06, 16, 0, 0))
+				.ending_date(null)
+				.pause_time(0)
+				.km(BigDecimal.valueOf(12))
+				.cost(BigDecimal.valueOf(1500))
+				.paused(false)
+				.build();
+		
+		Mockito.when(this.travelRepository.findById("b")).thenReturn(Optional.of(travel));
+		Mockito.when(this.objectMapper.convertValue(travelEditedDto, Travel.class)).thenReturn(travelEdited);
+		
+		this.travelService.update(travelEditedDto, "b");
+		
+		Mockito.verify(this.travelRepository, Mockito.times(1)).save(travelEdited);
+	}
+	
+	@Test
+	void deleteTest() {
 		this.travelService.delete("b");
 		
-		Mockito.verify(this.travelRepository, Mockito.times(1)).findById("b");
+		Mockito.verify(this.travelRepository, Mockito.times(1)).deleteById("b");
 	}
 
 }

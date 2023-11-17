@@ -12,7 +12,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.arqui.integrador.dto.TokenDto;
-import com.arqui.integrador.dto.UserAuthRequestDto;
+import com.arqui.integrador.dto.UserCreateDto;
+import com.arqui.integrador.dto.UserLoginDto;
 import com.arqui.integrador.exception.CustomBadCredentialsException;
 import com.arqui.integrador.exception.UnauthorizedTokenException;
 import com.arqui.integrador.security.JwtTokenManager;
@@ -38,7 +39,7 @@ public class AuthController implements IAuthController{
 	}
 	
 	@Override
-	public ResponseEntity<TokenDto> login(UserAuthRequestDto user) {
+	public ResponseEntity<TokenDto> login(UserLoginDto user) {
 		try {
 			authenticationManager.authenticate(
 					new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
@@ -59,7 +60,7 @@ public class AuthController implements IAuthController{
 	}
 
 	@Override
-	public ResponseEntity<HttpStatus> register(@Valid UserAuthRequestDto user) {
+	public ResponseEntity<HttpStatus> register(@Valid UserCreateDto user) {
 		LOG.info("Register user: {}", user.getUsername());
 		
 		this.authService.register(user);

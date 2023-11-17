@@ -1,20 +1,10 @@
 package com.arqui.integrador.service;
 
-import com.arqui.integrador.dto.BillDto;
-import com.arqui.integrador.dto.PausedTimeResponseDto;
-import com.arqui.integrador.dto.PriceDto;
-import com.arqui.integrador.dto.TravelDto;
-import com.arqui.integrador.dto.TravelsScooterResponseDto;
-import com.arqui.integrador.model.Price;
-import com.arqui.integrador.model.Travel;
-import com.arqui.integrador.repository.PriceRepository;
-import com.arqui.integrador.repository.TravelRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -24,6 +14,20 @@ import org.springframework.data.mongodb.core.aggregation.Fields;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.arqui.integrador.dto.BillDto;
+import com.arqui.integrador.dto.PausedTimeResponseDto;
+import com.arqui.integrador.dto.PriceDto;
+import com.arqui.integrador.dto.TravelDto;
+import com.arqui.integrador.dto.TravelsScooterResponseDto;
+import com.arqui.integrador.exception.ItemNotFoundException;
+import com.arqui.integrador.model.Price;
+import com.arqui.integrador.model.Travel;
+import com.arqui.integrador.repository.PriceRepository;
+import com.arqui.integrador.repository.TravelRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class TravelService {
@@ -50,7 +54,8 @@ public class TravelService {
   }
 
   public TravelDto getById(String id) {
-    Travel t = repository.findById(id).orElse(null);
+    Travel t = repository.findById(id).orElseThrow(
+    		() -> new ItemNotFoundException("Item not found.", "Item with id: " + id + " not found."));
     return mapper.convertValue(t, TravelDto.class);
   }
 
@@ -63,7 +68,8 @@ public class TravelService {
     List<TravelDto> list = new ArrayList<>();
     List<Travel> resp = repository.findAll();
     for (Travel travel : resp) {
-      list.add(mapper.convertValue(travel, TravelDto.class));
+    	TravelDto t = mapper.convertValue(travel, TravelDto.class);
+      list.add(t);
     }
     return list;
   }
@@ -77,8 +83,6 @@ public class TravelService {
     t1.setCost(t.getCost());
     t1.setEnding_date(t.getEnding_date());
     t1.setKm(t.getKm());
-    LOG.info("t1 {}", t1);
-    LOG.info("t {}", t);
     t1.setId(id);
     repository.save(t1);
   }
