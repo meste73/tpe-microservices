@@ -21,7 +21,7 @@ import com.arqui.integrador.mcsvmaintenance.config.MaintenanceConfig;
 import com.arqui.integrador.mcsvmaintenance.dto.ListOfIdsToUpdateDTO;
 import com.arqui.integrador.mcsvmaintenance.dto.MaintenanceDTO;
 import com.arqui.integrador.mcsvmaintenance.dto.ScooterForMaintenanceDTO;
-import com.arqui.integrador.mcsvmaintenance.exeption.ItemNotFoundException;
+import com.arqui.integrador.mcsvmaintenance.exception.ItemNotFoundException;
 import com.arqui.integrador.mcsvmaintenance.model.Maintenance;
 import com.arqui.integrador.mcsvmaintenance.repository.IMaintenanceRepository;
 

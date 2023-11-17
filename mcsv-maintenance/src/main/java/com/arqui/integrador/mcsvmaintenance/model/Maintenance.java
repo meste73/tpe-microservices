@@ -1,9 +1,7 @@
 package com.arqui.integrador.mcsvmaintenance.model;
 
 import java.io.Serializable;
-import java.security.Timestamp;
 import java.time.LocalDate;
-
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -23,8 +21,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Table(name = "maintenances")
 public class Maintenance implements Serializable{
-    
-    @Id
+
+	private static final long serialVersionUID = 1L;
+
+	@Id
     @Column(name = "maintenance_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id_maintenance;
@@ -36,7 +36,5 @@ public class Maintenance implements Serializable{
     private Long id_scooter;
 
     private float scooter_km;
-
-    // private Timestamp scooter_usage_time; 
 
 }

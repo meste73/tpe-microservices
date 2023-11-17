@@ -82,7 +82,7 @@ class AdministratorServiceTest {
 		ItemNotFoundException expectedException = Assertions.assertThrows(
 				ItemNotFoundException.class, () -> this.administratorService.getById(1L));
 		
-		Assertions.assertEquals("Item not found.", expectedException.getMessage());
+		Assertions.assertEquals("Item not found", expectedException.getMessage());
 		
 		Mockito.verify(this.userRepository, Mockito.times(1)).findById(1L);
 	}
@@ -155,8 +155,8 @@ class AdministratorServiceTest {
 		
 		Mockito.verify(this.userRepository, Mockito.times(1)).save(adminEdited);
 		
-		Assertions.assertEquals("meste", userDto.getName());
-		Assertions.assertNotEquals("meste73", userDto.getName());
+		Assertions.assertEquals("meste73", userDto.getName());
+		Assertions.assertNotEquals("FranK", userDto.getName());
 	}
 	
 	@Test

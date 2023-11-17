@@ -1,4 +1,4 @@
-package com.arqui.integrador.mcsvmaintenance.exeption;
+package com.arqui.integrador.mcsvmaintenance.exception;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
@@ -8,8 +8,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import  com.arqui.integrador.mcsvmaintenance.exeption.ErrorResponse;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+@RestControllerAdvice
 public class CustomExceptionHandler {
 
     private static final Logger LOG = LoggerFactory.getLogger(CustomExceptionHandler.class);

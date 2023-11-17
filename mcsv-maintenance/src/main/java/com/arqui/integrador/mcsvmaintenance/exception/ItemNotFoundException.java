@@ -1,4 +1,4 @@
-package com.arqui.integrador.mcsvmaintenance.exeption;
+package com.arqui.integrador.mcsvmaintenance.exception;
 
 
 import org.springframework.http.HttpStatus;
