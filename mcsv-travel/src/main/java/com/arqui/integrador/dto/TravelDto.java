@@ -39,7 +39,7 @@ public class TravelDto implements Serializable {
 	@JsonProperty("km")
 	private BigDecimal km;
 	@JsonProperty("cost")
-	private BigDecimal cost;
+	private Double cost;
 	@JsonProperty("paused")
 	private boolean paused;
 	@JsonProperty("pause_time")

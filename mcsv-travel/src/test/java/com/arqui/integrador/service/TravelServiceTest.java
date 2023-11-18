@@ -48,7 +48,7 @@ class TravelServiceTest {
 							.ending_date(null)
 							.pause_time(0)
 							.km(BigDecimal.valueOf(45))
-							.cost(BigDecimal.valueOf(5000))
+							.cost(Double.valueOf(5000))
 							.paused(false)
 							.build();
 		
@@ -62,7 +62,7 @@ class TravelServiceTest {
 							.ending_date(null)
 							.pause_time(0)
 							.km(BigDecimal.valueOf(12))
-							.cost(BigDecimal.valueOf(1500))
+							.cost(Double.valueOf(1500))
 							.paused(false)
 							.build();
 		
@@ -75,7 +75,7 @@ class TravelServiceTest {
 							.ending_date(null)
 							.pause_time(20)
 							.km(BigDecimal.valueOf(55))
-							.cost(BigDecimal.valueOf(6000))
+							.cost(Double.valueOf(6000))
 							.paused(false)
 							.build();
 		
@@ -92,7 +92,7 @@ class TravelServiceTest {
 				.ending_date(null)
 				.pause_time(0)
 				.km(BigDecimal.valueOf(45))
-				.cost(BigDecimal.valueOf(5000))
+				.cost(Double.valueOf(5000))
 				.paused(false)
 				.build();
 		
@@ -105,7 +105,7 @@ class TravelServiceTest {
 				.ending_date(null)
 				.pause_time(0)
 				.km(BigDecimal.valueOf(12))
-				.cost(BigDecimal.valueOf(1500))
+				.cost(Double.valueOf(1500))
 				.paused(false)
 				.build();
 		
@@ -118,7 +118,7 @@ class TravelServiceTest {
 				.ending_date(null)
 				.pause_time(20)
 				.km(BigDecimal.valueOf(55))
-				.cost(BigDecimal.valueOf(6000))
+				.cost(Double.valueOf(6000))
 				.paused(false)
 				.build();
 		
@@ -170,7 +170,7 @@ class TravelServiceTest {
 				.start_date(LocalDateTime.of(2023, 06, 15, 0, 0))
 				.ending_date(null).pause_time(0)
 				.km(BigDecimal.valueOf(45))
-				.cost(BigDecimal.valueOf(5000))
+				.cost(Double.valueOf(5000))
 				.paused(false)
 				.build();
 		
@@ -183,7 +183,7 @@ class TravelServiceTest {
 				.ending_date(null)
 				.pause_time(0)
 				.km(BigDecimal.valueOf(45))
-				.cost(BigDecimal.valueOf(5000))
+				.cost(Double.valueOf(5000))
 				.paused(false)
 				.build();
 		
@@ -239,7 +239,7 @@ class TravelServiceTest {
 				.ending_date(null)
 				.pause_time(0)
 				.km(BigDecimal.valueOf(45))
-				.cost(BigDecimal.valueOf(5000))
+				.cost(Double.valueOf(5000))
 				.paused(false)
 				.build();
 				
@@ -253,7 +253,7 @@ class TravelServiceTest {
 				.ending_date(null)
 				.pause_time(0)
 				.km(BigDecimal.valueOf(45))
-				.cost(BigDecimal.valueOf(5000))
+				.cost(Double.valueOf(5000))
 				.paused(false)
 				.build();
 		
@@ -276,7 +276,7 @@ class TravelServiceTest {
 				.ending_date(null)
 				.pause_time(0)
 				.km(BigDecimal.valueOf(45))
-				.cost(BigDecimal.valueOf(5000))
+				.cost(Double.valueOf(5000))
 				.paused(false)
 				.build();
 		
@@ -289,7 +289,7 @@ class TravelServiceTest {
 				.ending_date(null)
 				.pause_time(0)
 				.km(BigDecimal.valueOf(12))
-				.cost(BigDecimal.valueOf(1500))
+				.cost(Double.valueOf(1500))
 				.paused(false)
 				.build();
 		
@@ -303,7 +303,7 @@ class TravelServiceTest {
 				.ending_date(null)
 				.pause_time(0)
 				.km(BigDecimal.valueOf(12))
-				.cost(BigDecimal.valueOf(1500))
+				.cost(Double.valueOf(1500))
 				.paused(false)
 				.build();
 		

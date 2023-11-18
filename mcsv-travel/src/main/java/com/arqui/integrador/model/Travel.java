@@ -35,6 +35,6 @@ import lombok.ToString;
 		private LocalDateTime ending_date;
 		private int pause_time;
 		private BigDecimal km;
-		private BigDecimal cost;
+		private Double cost;
 		private boolean paused;
 	}

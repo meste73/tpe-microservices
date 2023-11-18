@@ -41,11 +41,10 @@ public class TravelService {
   private ObjectMapper mapper;
 
   public TravelService(
-    TravelRepository repository,
-    @Qualifier("mapper") ObjectMapper mapper,
-    PriceRepository priceRepository, 
-    MongoTemplate mongoTemplate
-  ) {
+      TravelRepository repository,
+      @Qualifier("mapper") ObjectMapper mapper,
+      PriceRepository priceRepository,
+      MongoTemplate mongoTemplate) {
     this.mongoTemplate = mongoTemplate;
 
     this.repository = repository;
@@ -55,7 +54,7 @@ public class TravelService {
 
   public TravelDto getById(String id) {
     Travel t = repository.findById(id).orElseThrow(
-    		() -> new ItemNotFoundException("Item not found.", "Item with id: " + id + " not found."));
+        () -> new ItemNotFoundException("Item not found.", "Item with id: " + id + " not found."));
     return mapper.convertValue(t, TravelDto.class);
   }
 
@@ -68,7 +67,7 @@ public class TravelService {
     List<TravelDto> list = new ArrayList<>();
     List<Travel> resp = repository.findAll();
     for (Travel travel : resp) {
-    	TravelDto t = mapper.convertValue(travel, TravelDto.class);
+      TravelDto t = mapper.convertValue(travel, TravelDto.class);
       list.add(t);
     }
     return list;
@@ -77,8 +76,8 @@ public class TravelService {
   @Transactional
   public void update(TravelDto t, String id) {
     Travel t1 = repository
-      .findById(id)
-      .orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado"));
+        .findById(id)
+        .orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado"));
     t1 = mapper.convertValue(t, Travel.class);
     t1.setCost(t.getCost());
     t1.setEnding_date(t.getEnding_date());
@@ -99,48 +98,39 @@ public class TravelService {
 
   public BillDto getBills(int year, int month1, int month2) {
 
-    Date startDate = convertToStartDate(year, month1);
-    Date endDate = convertToEndDate(year, month2);
+    List<TravelDto> t = this.getTravels(year, month1, month2);
+    Double result = 0.0;
+    for (TravelDto travelDto : t) {
+      result += travelDto.getCost();
+    }
+
+    BillDto billDto = BillDto.builder().total(result).build();
+    return billDto;
+  }
+
+  private List<TravelDto> getTravels(int year, int month1, int month2) {
+    Date startDateMonth1 = convertToStartDate(year, month1);
+    Date endDateMonth2 = convertToEndDate(year, month2);
 
     Aggregation aggregation = Aggregation.newAggregation(
-      // Match documents based on the conditions
-      Aggregation.match(
-        Criteria.where("start_date").gte(startDate).lte(endDate)
-      ),
-      // Project to extract year and month from the start_date
-      Aggregation
-        .project()
-        .andExpression("year('$start_date')")
-        .as("year")
-        .andExpression("month('$start_date')")
-        .as("month"),
-      // Match documents within the specified months
-      Aggregation.match(Criteria.where("month").gte(month1).lte(month2)),
-      // Group by year and count the number of documents
-      Aggregation
-        .group(Fields.from(Fields.field("year", "$year")))
-        .sum("cost")
-        .as("total"),
-      // Project to shape the output
-      Aggregation.project().and("total").as("total")
-    );
+        // Match documents based on the conditions
+        Aggregation.match(
+            Criteria.where("start_date").gte(startDateMonth1).lte(endDateMonth2).and("ending_date").lt(endDateMonth2)),
+        // Project to shape the output
+        Aggregation.project()
+            .and("id").as("id")
+            .and("id_account").as("id_cuenta")
+            .and("id_user").as("id_usuario")
+            .and("id_scooter").as("id_scooter")
+            .and("start_date").as("start_date")
+            .and("ending_date").as("ending_date")
+            .and("km").as("km")
+            .and("cost").as("cost")
+            .and("paused").as("paused")
+            .and("pause_time").as("pause_time"));
 
-    return mongoTemplate
-      .aggregate(aggregation, "Travel", BillDto.class)
-      .getUniqueMappedResult();
-  }
-
-  public List<TravelsScooterResponseDto> getAllByYearQuantity(
-    int year,
-    Long quantity
-  ) {
-    return repository.getQuantityByYear(year, quantity);
-  }
-
-  public void newPrice(PriceDto p) {
-    Price p1 = mapper.convertValue(p, Price.class);
-    LOG.info("new price: {}", p1);
-    priceRepository.save(p1);
+    return mongoTemplate.aggregate(aggregation, "Travel", TravelDto.class)
+        .getMappedResults();
   }
 
   private Date convertToStartDate(int year, int month) {
@@ -157,11 +147,22 @@ public class TravelService {
     calendar.set(Calendar.YEAR, year);
     calendar.set(Calendar.MONTH, month - 1); // Month in Calendar is 0-based
     calendar.set(
-      Calendar.DAY_OF_MONTH,
-      calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
-    ); // Set day to the last
+        Calendar.DAY_OF_MONTH,
+        calendar.getActualMaximum(Calendar.DAY_OF_MONTH)); // Set day to the last
     // day of the month
 
     return calendar.getTime();
+  }
+
+  public List<TravelsScooterResponseDto> getAllByYearQuantity(
+      int year,
+      Long quantity) {
+    return repository.getQuantityByYear(year, quantity);
+  }
+
+  public void newPrice(PriceDto p) {
+    Price p1 = mapper.convertValue(p, Price.class);
+    LOG.info("new price: {}", p1);
+    priceRepository.save(p1);
   }
 }
