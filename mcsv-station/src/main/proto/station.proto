@@ -5,7 +5,7 @@ package com.arqui.integrador.grpc;
 option java_multiple_files = true;
 option java_package = "com.arqui.integrador.grpc";
 
-service StationGrpcService{
+service StationService{
   rpc getNearest(Location) returns (StationGrpcObject){}
   rpc getNearStations (Location) returns (StationGrpcObjectList){}
 }
@@ -16,7 +16,7 @@ message Location{
 }
 
 message StationGrpcObject{
-  	int32 id = 1;
+  	int64 id = 1;
 	string location = 2;
 	double latitude = 3;
 	double longitude = 4;

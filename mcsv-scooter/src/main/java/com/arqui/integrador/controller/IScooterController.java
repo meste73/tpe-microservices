@@ -22,6 +22,7 @@ import com.arqui.integrador.dto.ScooterListDTO;
 import com.arqui.integrador.dto.ScooterNearestDTO;
 import com.arqui.integrador.dto.ScooterOperationDTO;
 import com.arqui.integrador.dto.ScooterReportDTO;
+import com.arqui.integrador.dto.StationDTO;
 import com.arqui.integrador.grpc.StationGrpcObject;
 import com.arqui.integrador.grpc.StationGrpcObjectList;
 
@@ -61,12 +62,12 @@ public interface IScooterController {
 	@GetMapping(value = "/nearest-station/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
 	@ResponseBody
-	ResponseEntity<StationGrpcObject> getNearest(@PathVariable("id") Long id);
+	ResponseEntity<StationDTO> getNearest(@PathVariable("id") Long id);
 	
 	@GetMapping(value = "/near-stations/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
 	@ResponseBody
-	ResponseEntity<StationGrpcObjectList> getNearStations(@PathVariable("id") Long id);
+	ResponseEntity<List<StationDTO>> getNearStations(@PathVariable("id") Long id);
 	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)

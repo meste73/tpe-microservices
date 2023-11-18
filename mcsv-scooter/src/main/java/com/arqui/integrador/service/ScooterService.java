@@ -25,6 +25,7 @@ import com.arqui.integrador.dto.ScooterNearestDTO;
 import com.arqui.integrador.dto.ScooterOperationDTO;
 import com.arqui.integrador.dto.ScooterPauseDTO;
 import com.arqui.integrador.dto.ScooterReportDTO;
+import com.arqui.integrador.dto.StationDTO;
 import com.arqui.integrador.exception.ItemNotFoundException;
 import com.arqui.integrador.grpc.StationGrpcObject;
 import com.arqui.integrador.grpc.StationGrpcObjectList;
@@ -190,7 +191,7 @@ public class ScooterService implements IScooterService{
 	}
 
 	@Override
-	public StationGrpcObject getNearestStation(Long id) {
+	public StationDTO getNearestStation(Long id) {
 		ManagedChannel channel = NettyChannelBuilder.forTarget("dns:///localhost:6565").
 				usePlaintext().build();
 		
@@ -204,15 +205,21 @@ public class ScooterService implements IScooterService{
 					setLongitude(scooter.getLongitude()).
 					build());
 		
-		LOG.info("Nearest Station: {} ", response);
+		StationDTO toReturn = StationDTO.builder().
+				id(response.getId()).
+				location(response.getLocation()).
+				latitude(response.getLatitude()).
+				longitude(response.getLongitude()).build();
+		
+		LOG.info("Nearest Station: {} ", toReturn);
 		
 		channel.shutdown();
 		
-		return response;
+		return toReturn;
 	}
 
 	@Override
-	public StationGrpcObjectList getNearStations(Long id) {
+	public List<StationDTO> getNearStations(Long id) {
 		ManagedChannel channel = NettyChannelBuilder.forTarget("dns:///localhost:6565").
 				usePlaintext().build();
 		
@@ -226,11 +233,23 @@ public class ScooterService implements IScooterService{
 					setLongitude(scooter.getLongitude()).
 					build());
 		
-		LOG.info("Near Stations: {} ", response);
+		List<StationGrpcObject> result = response.getStationList();
+		
+		List<StationDTO> objectsToReturn = new ArrayList<>();
+		
+		result.forEach(station -> objectsToReturn.add(
+				StationDTO.builder()
+						.id(station.getId())
+						.location(station.getLocation())
+						.longitude(station.getLongitude())
+						.latitude(station.getLatitude())
+						.build()));
+		
+		LOG.info("Near Stations: {} ", objectsToReturn);
 		
 		channel.shutdown();
 		
-		return response;
+		return objectsToReturn;
 		
 	}
 	
