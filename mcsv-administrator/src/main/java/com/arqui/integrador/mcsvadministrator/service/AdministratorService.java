@@ -1,6 +1,8 @@
 package com.arqui.integrador.mcsvadministrator.service;
 
-import java.time.LocalDate;
+import static com.arqui.integrador.mcsvadministrator.utils.AdministratorMapper.dtoToEntity;
+import static com.arqui.integrador.mcsvadministrator.utils.AdministratorMapper.entityToDto;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,17 +19,12 @@ import org.springframework.web.client.RestTemplate;
 
 import com.arqui.integrador.mcsvadministrator.dto.AdministratorDTO;
 import com.arqui.integrador.mcsvadministrator.dto.FareDTO;
-import com.arqui.integrador.mcsvadministrator.dto.FareNewPriceDTO;
-import com.arqui.integrador.mcsvadministrator.dto.ScooterForMaintenanceDTO;
 import com.arqui.integrador.mcsvadministrator.dto.ScooterOperationDTO;
 import com.arqui.integrador.mcsvadministrator.dto.TravelsByTotalBillingAmount;
 import com.arqui.integrador.mcsvadministrator.dto.TravelsByYearsDTO;
+import com.arqui.integrador.mcsvadministrator.exception.ItemNotFoundException;
 import com.arqui.integrador.mcsvadministrator.model.Administrator;
 import com.arqui.integrador.mcsvadministrator.repository.IAdministratorRepository;
-import com.arqui.integrador.mcsvadministrator.exception.ItemNotFoundException;
-
-import static com.arqui.integrador.mcsvadministrator.utils.AdministratorMapper.dtoToEntity;
-import static com.arqui.integrador.mcsvadministrator.utils.AdministratorMapper.entityToDto;
 
 @Service
 public class AdministratorService implements IAdministratorService {
@@ -97,7 +94,7 @@ public class AdministratorService implements IAdministratorService {
         HttpEntity<Void> requestEntity = getRequestEntity();
         
         restTemplate.exchange(
-                "127.0.0.1:8006/accounts/" + id + "/" + status,
+                "lb://mcsv-user:8080/accounts/" + id + "/" + status,
                 HttpMethod.PUT,
                 requestEntity,
                 new ParameterizedTypeReference<Void>() {
@@ -110,7 +107,7 @@ public class AdministratorService implements IAdministratorService {
         HttpEntity<Void> requestEntity = getRequestEntity();
 
         ResponseEntity<List<TravelsByYearsDTO>> result = restTemplate.exchange(
-                "http://127.0.0.1:8005/travels/filter?year=" + year + "&quantity=" + quantity,
+                "lb://mcsv-travel:8080/travels/filter?year=" + year + "&quantity=" + quantity,
                 HttpMethod.GET,
                 requestEntity,
                 new ParameterizedTypeReference<List<TravelsByYearsDTO>>() {
@@ -118,7 +115,7 @@ public class AdministratorService implements IAdministratorService {
         if (result.getStatusCode().is2xxSuccessful()) {
             return result.getBody();
         } else {
-            return new ArrayList<>(); // TODO : Devolver un Error
+            return new ArrayList<>();
         }
     }
 
@@ -128,10 +125,7 @@ public class AdministratorService implements IAdministratorService {
         HttpEntity<Void> requestEntity = getRequestEntity();
 
         ResponseEntity<TravelsByTotalBillingAmount> result = restTemplate.exchange(
-                // "http://0.0.0.0:8005/travels/billing?year=" + year + "&month1=" + month1 + "&month2=" + month2,
-                "http://127.0.0.1:8005/travels/billing?year=" + year + "&month1=" + month1 + "&month2=" + month2,
-                
-
+                "lb://mcsv-travel:8080/travels/billing?year=" + year + "&month1=" + month1 + "&month2=" + month2,
                 HttpMethod.GET,
                 requestEntity,
                 new ParameterizedTypeReference<TravelsByTotalBillingAmount>() {
@@ -139,7 +133,7 @@ public class AdministratorService implements IAdministratorService {
         if (result.getStatusCode().is2xxSuccessful()) {
             return result.getBody();
         } else {
-            return null; // TODO : Devolver un Error
+            return null;
         }
     }
 
@@ -148,9 +142,8 @@ public class AdministratorService implements IAdministratorService {
 
         HttpEntity<Void> requestEntity = getRequestEntity();
 
-        // Llamo a mantenimiento y le pido los ids de los que estan en mantenimiento
         ResponseEntity<List<Long>> allNewsInMaintenance = restTemplate.exchange(
-                "http://127.0.0.1:8003/maintenance/scooters-for-maintenance",
+                "lb://mcsv-maintenance:8080/maintenance/scooters-for-maintenance",
                 HttpMethod.GET, requestEntity,
                 new ParameterizedTypeReference<List<Long>>() {
                 });
@@ -158,7 +151,7 @@ public class AdministratorService implements IAdministratorService {
         if (allNewsInMaintenance.getStatusCode().is2xxSuccessful()) {
             return allNewsInMaintenance.getBody();
         } else {
-            return new ArrayList<>(); // TODO : Devolver un Error
+            return new ArrayList<>();
         }
     }
 
@@ -166,7 +159,7 @@ public class AdministratorService implements IAdministratorService {
     public List<ScooterOperationDTO> getScooterInOperation() {
         HttpEntity<Void> requestEntity = getRequestEntity();
         ResponseEntity<List<ScooterOperationDTO>> result = restTemplate.exchange(
-                "http://127.0.0.1:8004/scooters/in-operation",
+                "lb://mcsv-scooter:8080/scooters/in-operation",
                 HttpMethod.GET, requestEntity,
                 new ParameterizedTypeReference<List<ScooterOperationDTO>>() {
                 });
@@ -174,7 +167,7 @@ public class AdministratorService implements IAdministratorService {
         if (result.getStatusCode().is2xxSuccessful()) {
             return result.getBody();
         } else {
-            return new ArrayList<>(); // TODO : Devolver un Error
+            return new ArrayList<>();
         }
     }
 
@@ -193,12 +186,9 @@ public class AdministratorService implements IAdministratorService {
         HttpEntity<FareDTO> requestEntity = new HttpEntity<>(f, headers);
 
          restTemplate.exchange(
-                "http://127.0.0.1:8005/travels/price",
+                "lb://mcsv-travel:8080/travels/price",
                 HttpMethod.POST, requestEntity,
                 new ParameterizedTypeReference<Void>() {
                 });
-
-        // LOG.info("Updating Fare whit price: {} and Date: {}" , value , date  );
-                
     }
 }

@@ -1,6 +1,6 @@
 spring:
  datasource:
-  url: jdbc:mysql://localhost:3306/Station
+  url: jdbc:mysql://localhost:3306/Station?createDatabaseIfNotExist=true
   username: root
   password: admin
  jpa:

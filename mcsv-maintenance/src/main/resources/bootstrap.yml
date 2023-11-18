@@ -1,6 +1,6 @@
 spring:
  datasource:
-  url: jdbc:mysql://localhost:3306/arqui_tpe_maintenance
+  url: jdbc:mysql://localhost:3306/arqui_tpe_maintenance?createDatabaseIfNotExist=true
   username: root
   password: admin
  jpa:

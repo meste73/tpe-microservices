@@ -1,5 +1,4 @@
-package com.arqui.integrador.mcsvmaintenance.exeption;
-
+package com.arqui.integrador.exception;
 
 import org.springframework.http.HttpStatus;
 
@@ -11,4 +10,3 @@ public class ItemNotFoundException extends CustomException{
 		super(HttpStatus.NOT_FOUND, error, description);
 	}
 }
-

@@ -1,9 +1,10 @@
 package com.arqui.integrador.repository;
 
+import java.util.Date;
 import java.util.List;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.mongodb.repository.Aggregation;
+import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 import com.arqui.integrador.dto.BillDto;
@@ -13,16 +14,34 @@ import com.arqui.integrador.model.Price;
 import com.arqui.integrador.model.Travel;
 
 @Repository
-public interface TravelRepository extends JpaRepository<Travel, Long> {
+public interface TravelRepository extends MongoRepository<Travel, String> {
 
-	@Query("SELECT new com.arqui.integrador.dto.PausedTimeResponseDto(t.idScooter, SUM(t.pauseTime)) FROM com.arqui.integrador.model.Travel t GROUP BY t.idScooter")
-	List<PausedTimeResponseDto> getAllByPause();
+    /*
+     * @Aggregation({
+     * "{$match: { $expr: { $and: [ { $gte: [ '$start_date', ?0 ] }, { $lte: [ '$ending_date', ?1 ] } ] } } }"
+     * ,
+     * "{$group: { _id: null, total: { $sum: '$cost' } } }",
+     * "{$project: { _id: 0, total: 1 } }"
+     * })
+     * BillDto getBillsByDate(Date startDate, Date endDate);
+     */
 
-	@Query("SELECT new com.arqui.integrador.dto.TravelsScooterResponseDto(t.idScooter, COUNT(*)) FROM com.arqui.integrador.model.Travel t WHERE year(t.startDate)=:year AND year(t.endingDate)=:year GROUP BY t.idScooter HAVING COUNT(*)>:quantity")
-	List<TravelsScooterResponseDto> getQuantityByYear(int year, Long quantity);
+    @Aggregation({
+            "{ $group: { _id: '$id_scooter', totalPauseTime: { $sum: '$pause_time' } } }",
+            "{ $project: { _id: '$_id', id_scooter: '$_id', pause_time: '$totalPauseTime' } }"
+    })
+    List<PausedTimeResponseDto> getAllByPause();
 
-	@Query("SELECT new com.arqui.integrador.dto.BillDto (SUM (t.cost) AS total_value) FROM com.arqui.integrador.model.Travel t WHERE year(t.startDate)=:year AND month(t.startDate) BETWEEN :month1 AND :month2")
-	BillDto getBillsByDate(int year, int month1, int month2);
+    void save(Price p1);
 
-	void save(Price p1);
+    @Aggregation({
+            "{ $match: { $expr: { $and: [ { $eq: [ { $year: '$start_date' }, ?0 ] }, { $eq: [ { $year: '$ending_date' }, ?0 ] } ] } } }",
+            "{ $group: { _id: '$id_scooter', count: { $sum: 1 } } }",
+            "{ $match: { count: { $gte: ?1 } } }",
+            "{ $project: { _id: '$_id', id_scooter: '$_id', travel_quantity: '$count' } }"
+    })
+    List<TravelsScooterResponseDto> getQuantityByYear(int year, Long quantity);
+    // "{ $match: { count: { $gt: ?1 } } }", // Si queremos que sea Solo mayor y no
+    // mayor o igual, es $gt en vez de $gte
+
 }

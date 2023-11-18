@@ -2,54 +2,39 @@ package com.arqui.integrador.model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-
-import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
-@Entity
-@Table(name = "Travel")
+@Document(collection = "Travel")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Travel implements Serializable{
+@ToString
+	public class Travel implements Serializable {
 
-	private static final long serialVersionUID = -1680823192265785318L;
-	
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name="id")
-	private Long id;
-	@Column(name="id_account")
-	private int idAccount;
-	@Column(name="id_user")
-	private int idUser;
-	@Column(name="id_scooter")
-	private int idScooter;
-	@Column(name="start_date", nullable = false, updatable = false)
-	@CreationTimestamp
-	private Timestamp startDate;
-	@CreationTimestamp
-	@Column(name="ending_date")
-	private Timestamp endingDate;
-	@Column(name="pause_time")
-	private int pauseTime;
-	@Column(name="km")
-	private BigDecimal km;
-	@Column(name="cost")
-	private BigDecimal cost;
-	@Column(name="paused")
-	private boolean paused;	
-}
+		private static final long serialVersionUID = -1680823192265785318L;
+		@Id
+		private String id; 
+		private int id_account;
+		private int id_user;
+		private Integer id_scooter;
+		@CreatedDate
+		private LocalDateTime start_date;
+		@LastModifiedDate
+		private LocalDateTime ending_date;
+		private int pause_time;
+		private BigDecimal km;
+		private Double cost;
+		private boolean paused;
+	}

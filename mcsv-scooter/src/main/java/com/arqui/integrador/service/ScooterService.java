@@ -116,7 +116,7 @@ public class ScooterService implements IScooterService{
 			HttpEntity<List<Void>> requestEntity = new HttpEntity<>(headers);
 			
 			ResponseEntity<List<ScooterPauseDTO>> response = restTemplate.exchange(
-					"http://127.0.0.1:8005/travels/paused", 
+					"lb://mcsv-travel:8080/travels/paused", 
 					HttpMethod.GET, 
 					requestEntity, 
 					new ParameterizedTypeReference<List<ScooterPauseDTO>>() {}

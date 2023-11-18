@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.arqui.integrador.dto.TokenDto;
-import com.arqui.integrador.dto.UserAuthRequestDto;
+import com.arqui.integrador.dto.UserCreateDto;
+import com.arqui.integrador.dto.UserLoginDto;
 
 import jakarta.validation.Valid;
 
@@ -24,12 +25,12 @@ public interface IAuthController {
 	@PostMapping(value = "/login", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@ResponseStatus(HttpStatus.OK)
-	ResponseEntity<TokenDto> login(@RequestBody @Valid UserAuthRequestDto user);
+	ResponseEntity<TokenDto> login(@RequestBody @Valid UserLoginDto user);
 	
 	@PostMapping(value = "/register", consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@ResponseStatus(HttpStatus.CREATED)
-	ResponseEntity<HttpStatus> register(@RequestBody @Valid UserAuthRequestDto user);
+	ResponseEntity<HttpStatus> register(@RequestBody @Valid UserCreateDto user);
 	
 	@GetMapping(value = "/validate", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody

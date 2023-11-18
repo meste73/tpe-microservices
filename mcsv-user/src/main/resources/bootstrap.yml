@@ -1,8 +1,8 @@
 spring:
  datasource:
-  url: jdbc:postgresql://localhost:5432/mcsv-user
-  username: postgres
-  password: Mestelan2610
+  url: jdbc:mysql://localhost:3306/mcsv-user?createDatabaseIfNotExist=true
+  username: root
+  password: admin
  jpa:
   hibernate:
    ddl-auto: update

@@ -1,4 +1,4 @@
-package com.arqui.integrador.mcsvmaintenance.exeption;
+package com.arqui.integrador.exception;
 
 import java.sql.Timestamp;
 

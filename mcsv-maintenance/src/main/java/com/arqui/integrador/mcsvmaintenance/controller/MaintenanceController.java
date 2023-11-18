@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.arqui.integrador.mcsvmaintenance.dto.MaintenanceDTO;
-import com.arqui.integrador.mcsvmaintenance.dto.ScooterForMaintenanceDTO;
 import com.arqui.integrador.mcsvmaintenance.service.IMaintenanceService;
 
 import jakarta.validation.Valid;

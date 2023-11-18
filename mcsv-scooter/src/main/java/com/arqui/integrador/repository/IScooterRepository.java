@@ -21,7 +21,7 @@ public interface IScooterRepository extends JpaRepository<Scooter, Integer>{
 
 	@Query("SELECT new com.arqui.integrador.dto.ScooterOperationDTO(COUNT(s), s.enabled)"
 			+ "FROM com.arqui.integrador.model.Scooter s "
-			+ "GROUP BY s.enabled")
+			+ "GROUP BY s.enabled ")
 	List<ScooterOperationDTO> getScooterInOperation();
 	
 	@Query("SELECT new com.arqui.integrador.dto.ScooterNearestDTO(s.id, s.latitude, s.longitude, s.stationId)"
