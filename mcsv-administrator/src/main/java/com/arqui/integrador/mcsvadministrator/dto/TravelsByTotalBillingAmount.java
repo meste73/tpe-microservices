@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 
 public class TravelsByTotalBillingAmount {
 
-    private BigDecimal total_value ;
+    private Double total ;
 
 
 }
