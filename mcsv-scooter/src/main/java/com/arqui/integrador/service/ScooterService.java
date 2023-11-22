@@ -126,9 +126,12 @@ public class ScooterService implements IScooterService{
 			}
 			
 			for(ScooterReportDTO scooter: list) {
+				scooter.setPauseTime(0L);
 				for(ScooterPauseDTO scooterPause: responseMsTravels) {
 					if(scooterPause.getId().equals(scooter.getId())) {
-						scooter.setPauseTime(scooterPause.getPauseTime());
+						if(scooterPause.getPauseTime()!=null) {
+							scooter.setPauseTime(scooterPause.getPauseTime());
+						}
 					}
 				}
 			}

@@ -42,8 +42,6 @@ public class StationRepositoryGrpc{
 	                        "FROM com.arqui.integrador.model.Station s " +
 	                        "WHERE (s.latitude BETWEEN :minLatitude AND :maxLatitude) " +
 	                        "AND (s.longitude BETWEEN :minLongitude AND :maxLongitude) ");
-
-		 	LOG.info("Entro: {} {} {} {}", minLatitude, maxLatitude, minLongitude, maxLongitude);
 		 	
 	        query.setParameter("minLatitude", minLatitude);
 	        query.setParameter("maxLatitude", maxLatitude);

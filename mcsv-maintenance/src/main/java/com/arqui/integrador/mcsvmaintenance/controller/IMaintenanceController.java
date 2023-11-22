@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.arqui.integrador.mcsvmaintenance.dto.MaintenanceDTO;
+import com.arqui.integrador.mcsvmaintenance.dto.ScooterReportDTO;
 
 import jakarta.validation.Valid;
 
@@ -52,6 +53,11 @@ public interface IMaintenanceController {
 	@ResponseStatus(HttpStatus.OK)
 	@ResponseBody
 	List<Long> getScootersForMaintenance(@RequestParam (value = "available") Boolean available);
+	
+	@GetMapping(value = "/scooters/report")
+	@ResponseStatus(HttpStatus.OK)
+	@ResponseBody
+	ResponseEntity<List<ScooterReportDTO>> getScootersReport(@RequestParam(value = "pause-time", defaultValue = "false") Boolean pause_time);
 
 	@PutMapping(value = "/finalize/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)

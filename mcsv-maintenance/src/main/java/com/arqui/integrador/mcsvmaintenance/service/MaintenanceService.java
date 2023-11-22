@@ -20,6 +20,7 @@ import org.springframework.web.client.RestTemplate;
 import com.arqui.integrador.mcsvmaintenance.dto.ListOfIdsToUpdateDTO;
 import com.arqui.integrador.mcsvmaintenance.dto.MaintenanceDTO;
 import com.arqui.integrador.mcsvmaintenance.dto.ScooterForMaintenanceDTO;
+import com.arqui.integrador.mcsvmaintenance.dto.ScooterReportDTO;
 import com.arqui.integrador.mcsvmaintenance.exception.ItemNotFoundException;
 import com.arqui.integrador.mcsvmaintenance.model.Maintenance;
 import com.arqui.integrador.mcsvmaintenance.repository.IMaintenanceRepository;
@@ -152,6 +153,27 @@ public class MaintenanceService implements IMaintenanceService {
 
         return maintenanceDTO;
     }
+
+	@Override
+	public List<ScooterReportDTO> getScootersReport(Boolean pause_time) {
+		
+		HttpHeaders headers = new HttpHeaders();
+        HttpEntity<List<Void>> requestEntity = new HttpEntity<>(headers);
+		
+		ResponseEntity<List<ScooterReportDTO>> response = restTemplate.exchange(
+                "lb://mcsv-scooter:8080/scooters/report?pause-time="+pause_time,
+                HttpMethod.GET,
+                requestEntity,
+                new ParameterizedTypeReference<List<ScooterReportDTO>>() {
+                });
+		
+		 if (response.getStatusCode().is2xxSuccessful()) {
+	            return response.getBody();
+	        } else {
+	            return new ArrayList<>();
+	        }
+		
+	}
 
 
 }

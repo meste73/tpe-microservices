@@ -2,6 +2,7 @@ package com.arqui.integrador.mcsvmaintenance.service;
 
 import java.util.List;
 
+import com.arqui.integrador.mcsvmaintenance.dto.ScooterReportDTO;
 
 import com.arqui.integrador.mcsvmaintenance.dto.MaintenanceDTO;
 
@@ -19,6 +20,8 @@ public interface IMaintenanceService {
 
     List<Long> getScootersForMaintenance( Boolean available);
 
-   MaintenanceDTO finalizeMaintenance(Long id);
+    MaintenanceDTO finalizeMaintenance(Long id);
+    
+    List<ScooterReportDTO> getScootersReport(Boolean pause_time);
 	
 }

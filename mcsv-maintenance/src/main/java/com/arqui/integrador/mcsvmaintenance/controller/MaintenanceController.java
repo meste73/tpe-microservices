@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.arqui.integrador.mcsvmaintenance.dto.MaintenanceDTO;
+import com.arqui.integrador.mcsvmaintenance.dto.ScooterReportDTO;
 import com.arqui.integrador.mcsvmaintenance.service.IMaintenanceService;
 
 import jakarta.validation.Valid;
@@ -80,4 +81,18 @@ public class MaintenanceController implements IMaintenanceController {
 
         return ResponseEntity.ok(response);
     }
+
+	@Override
+	public ResponseEntity<List<ScooterReportDTO>> getScootersReport(Boolean pause_time) {
+		
+		List<ScooterReportDTO> response = this.maintenanceService.getScootersReport(pause_time);
+		
+		if(pause_time) {
+			LOG.info("Getting scooter report with pause: {}", response);
+		}else {
+			LOG.info("Getting scooter report without pause: {}", response);
+		}
+
+        return ResponseEntity.ok(response);
+	}
 }
